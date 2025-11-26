@@ -1,20 +1,34 @@
 {
   "routes": [
     {
-      "route": "/",
-      "redirect": "/login"
-    },
-    {
+      "$comment": "ログイン用のURI",
       "route": "/login",
-      "redirect": "/.auth/login/aad"
+      "rewrite": "/.auth/login/aad",
+      "allowedRoles": [
+        "authenticated"
+      ]
     },
     {
+      "$comment": "ログアウト用のURI",
       "route": "/logout",
-      "redirect": "/.auth/logout"
+      "rewrite": "/.auth/logout",
+      "allowedRoles": [
+        "authenticated"
+      ]
     },
     {
+      "$comment": "アクセスには認証必要",
       "route": "/*",
-      "allowedRoles": ["authenticated"]
+      "allowedRoles": [
+        "authenticated"
+      ]
     }
-  ]
+  ],
+  "responseOverrides": {
+    "401": {
+      "$comment": "認証していない場合はログインURIに転送",
+      "statusCode": 302,
+      "redirect": "/login"
+    }
+  }
 }
