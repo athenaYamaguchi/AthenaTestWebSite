@@ -142,7 +142,7 @@ export default {
   position: absolute;
   right: 0;
   margin-top: 8px;
-  min-width: 160px;
+  min-width: 200px;
   background: #fff;
   color: #2c3e50;
   border: 1px solid #e5e7eb;
