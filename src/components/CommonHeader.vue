@@ -48,8 +48,7 @@ export default {
       type: Array,
       default: () => [
         { key: 'home', label: 'ホーム', route: '/' },
-        { key: 'about', label: '概要', route: '/about' },
-        { key: 'settings', label: '設定', route: '/settings' }
+        { key: 'SettingsPage', label: '設定', route: '/SettingsPage' }
       ]
     }
   },

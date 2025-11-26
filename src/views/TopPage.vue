@@ -5,9 +5,7 @@
 
     <div class="welcome-box">
       <p>Vue Router で別ページに移動できます。</p>
-      <router-link to="/about">概要ページへ</router-link>
-      <br />
-      <router-link to="/settings">設定ページへ</router-link>
+      <router-link to="/SettingsPage">設定ページへ</router-link>
     </div>
   </div>
 </template>

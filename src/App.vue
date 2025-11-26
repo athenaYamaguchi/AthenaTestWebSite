@@ -13,9 +13,8 @@ export default {
   data() {
     return {
       menuItems: [
-        { key: 'TopPage',   label: 'トップページ',   route: '/' },
-        { key: 'about',     label: '概要',          route: '/about' },
-        { key: 'settings',  label: '設定',          route: '/settings' }
+        { key: 'TopPage',       label: 'トップページ',   route: '/' },
+        { key: 'SettingsPage',  label: '設定',          route: '/SettingsPage' }
       ]
     };
   }
