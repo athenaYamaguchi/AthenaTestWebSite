@@ -1,18 +1,16 @@
 <template>
   <CommonHeader />
   <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  
   <div class="mt-2">コストコのお土産はもうベーグルと柿一袋しかないんか？</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import CommonHeader from './components/header.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld, 
     CommonHeader
   }
 }
