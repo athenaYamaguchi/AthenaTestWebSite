@@ -140,7 +140,7 @@ export default {
 
 .dropdown-menu {
   position: absolute;
-  right: 0;
+  left: 0;
   margin-top: 8px;
   min-width: 200px;
   background: #fff;
