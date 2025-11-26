@@ -1,18 +1,18 @@
 <template>
-  <div class="home-page">
+  <div class="home-page-page">
     <h1>ここは設定ページだよ！</h1>
     <p>ここがアプリの2に表示されるページです。</p>
 
     <div class="welcome-box">
       <p>Vue Router で別ページに移動できます。</p>
-      <router-link to="/SettingsPage">設定ページへ</router-link>
+      <router-link to="/settings-page">設定ページへ</router-link>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "SettingsPage"
+  name: "settings-page"
 };
 </script>
 

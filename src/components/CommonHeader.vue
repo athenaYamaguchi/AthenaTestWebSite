@@ -47,8 +47,8 @@ export default {
     menuItems: {
       type: Array,
       default: () => [
-        { key: 'home', label: 'ホーム', route: '/' },
-        { key: 'SettingsPage', label: '設定', route: '/SettingsPage' }
+        { key: 'home-page', label: 'ホーム', route: '/' },
+        { key: 'settings-page', label: '設定', route: '/settings-page' }
       ]
     }
   },
