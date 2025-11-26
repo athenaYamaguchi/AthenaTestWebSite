@@ -1,6 +1,6 @@
 <template>
   <div class="home-page">
-    <h1>ホームページ</h1>
+    <h1>ここは設定ページだよ！</h1>
     <p>ここがアプリの2に表示されるページです。</p>
 
     <div class="welcome-box">
