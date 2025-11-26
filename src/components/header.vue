@@ -1,4 +1,3 @@
-
 <template>
   <header class="header">
     <div class="header-inner">
@@ -48,9 +47,9 @@ export default {
     menuItems: {
       type: Array,
       default: () => [
-        { key: 'home', label: 'ホーム' },
-        { key: 'about', label: '概要' },
-        { key: 'settings', label: '設定' }
+        { key: 'home', label: 'ホーム', route: '/' },
+        { key: 'about', label: '概要', route: '/about' },
+        { key: 'settings', label: '設定', route: '/settings' }
       ]
     }
   },
@@ -67,8 +66,11 @@ export default {
       this.isOpen = false;
     },
     handleSelect(item) {
-      this.$emit('select', item);
       this.close();
+      if (item.route) {
+        this.$router.push(item.route); // Vue Router を使ってページ遷移
+      }
+      this.$emit('select', item);
     },
     handleClickOutside(e) {
       const el = this.$refs.dropdownRef;
