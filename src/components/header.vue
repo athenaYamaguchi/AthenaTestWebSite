@@ -50,7 +50,7 @@
 
 <script>
 export default {
-  name: 'Header',
+  name: 'CommonHeader',
   props: {
     menuItems: {
       type: Array,
@@ -87,7 +87,8 @@ export default {
   mounted() {
     document.addEventListener('click', this.handleClickOutside);
   },
-  beforeDestroy() {
+  
+  beforeUnmount () {
     document.removeEventListener('click', this.handleClickOutside);
   }
 };
@@ -155,3 +156,27 @@ export default {
   border-radius: 8px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
   padding: 6px;
+  z-index: 1000;
+}
+.dropdown-item {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 14px;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dropdown-item:hover {
+  background: #f3f4f6;
+}
+.icon {
+  width: 1.1em;
+  text-align: center;
+}
+</style>
