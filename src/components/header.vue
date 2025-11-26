@@ -150,6 +150,8 @@ export default {
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
   padding: 6px;
   z-index: 1000;
+  list-style: none;
+  padding-left: 0;
 }
 .dropdown-item {
   width: 100%;
