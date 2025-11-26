@@ -162,7 +162,7 @@ export default {
   color: inherit;
   cursor: pointer;
   display: flex;
-  align-items: center;
+  align-items: left;
   gap: 8px;
 }
 .dropdown-item:hover {
