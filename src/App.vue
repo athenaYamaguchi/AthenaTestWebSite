@@ -1,20 +1,27 @@
 <template>
-  <CommonHeader />
-  <img alt="Vue logo" src="./assets/logo.png">
-  
-  <div class="mt-2">テスト</div>
+  <div id="app">
+    <CommonHeader :menu-items="menuItems" />
+    <router-view />
+  </div>
 </template>
 
 <script>
-import CommonHeader from './components/header.vue'
+import CommonHeader from './components/CommonHeader.vue';
 
 export default {
-  name: 'App',
-  components: {
-    CommonHeader
+  components: { CommonHeader },
+  data() {
+    return {
+      menuItems: [
+        { key: 'TopPage',   label: 'トップページ',   route: '/' },
+        { key: 'about',     label: '概要',          route: '/about' },
+        { key: 'settings',  label: '設定',          route: '/settings' }
+      ]
+    };
   }
-}
+};
 </script>
+
 
 <style>
 #app {
