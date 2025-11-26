@@ -1,7 +1,7 @@
 
 <template>
   <header class="header">
-    <h1>これはヘッダです</h1>
+    <h1>めんたいパークの中もっとみたかった</h1>
   </header>
 </template>
 

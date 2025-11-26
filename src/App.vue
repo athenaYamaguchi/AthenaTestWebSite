@@ -2,7 +2,7 @@
   <CommonHeader />
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>
-  <div class="mt-2">テストだよ</div>
+  <div class="mt-2">コストコのお土産はもうベーグルと柿一袋しかないんか？</div>
 </template>
 
 <script>
