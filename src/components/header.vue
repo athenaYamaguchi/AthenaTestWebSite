@@ -2,13 +2,6 @@
 <template>
   <header class="header">
     <div class="header-inner">
-      <div class="brand">
-        <slot name="logo">
-          <!-- ロゴが未指定ならテキストを表示 -->
-          <span class="brand-text">My App</span>
-        </slot>
-      </div>
-
       <nav class="nav">
         <div class="dropdown" ref="dropdownRef">
           <button
@@ -17,7 +10,7 @@
             :aria-expanded="isOpen.toString()"
             aria-haspopup="menu"
           >
-            メニュー
+            Menu
             <span class="caret" :class="{ open: isOpen }">▾</span>
           </button>
 
@@ -87,7 +80,7 @@ export default {
   mounted() {
     document.addEventListener('click', this.handleClickOutside);
   },
-  
+
   beforeUnmount () {
     document.removeEventListener('click', this.handleClickOutside);
   }

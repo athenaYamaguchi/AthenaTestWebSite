@@ -2,7 +2,7 @@
   <CommonHeader />
   <img alt="Vue logo" src="./assets/logo.png">
   
-  <div class="mt-2">コストコのお土産はもうベーグルと柿一袋しかないんか？</div>
+  <div class="mt-2">テスト</div>
 </template>
 
 <script>
@@ -23,6 +23,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
