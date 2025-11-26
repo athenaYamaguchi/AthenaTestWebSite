@@ -1,5 +1,5 @@
 <template>
-  <Header />
+  <CommonHeader />
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>
   <div class="mt-2">テストだよ</div>
@@ -7,13 +7,13 @@
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-import Header from './components/header.vue'
+import CommonHeader from './components/header.vue'
 
 export default {
   name: 'App',
   components: {
     HelloWorld, 
-    Header
+    CommonHeader
   }
 }
 </script>
