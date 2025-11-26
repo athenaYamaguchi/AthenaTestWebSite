@@ -1,12 +1,12 @@
 {
   "routes": [
     {
-      "route": "/login",
-      "redirect": "/.auth/login/aad"
+      "route": "/",
+      "redirect": "/login"
     },
     {
-      "route": "/logout",
-      "redirect": "/.auth/logout"
+      "route": "/login",
+      "redirect": "/.auth/login/aad"
     },
     {
       "route": "/*",
