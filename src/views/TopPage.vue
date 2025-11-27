@@ -4,7 +4,7 @@
     <p>ここがアプリの最初に表示されるページです。</p>
 
     <div class="welcome-box">
-      <p>読んだデータは viewData です：</p>
+      <p>読んだデータは viewData です test：</p>
 
       <!-- 読み込んだデータを表示 -->
       <pre>{{ viewData }}</pre>
