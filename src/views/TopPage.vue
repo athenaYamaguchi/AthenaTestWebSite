@@ -4,7 +4,11 @@
     <p>ここがアプリの最初に表示されるページです。</p>
 
     <div class="welcome-box">
-      <p>Vue Router で別ページに移動できます。</p>
+      <p>読んだデータは viewData です：</p>
+
+      <!-- 読み込んだデータを表示 -->
+      <pre>{{ viewData }}</pre>
+
       <router-link to="/settings-page">設定ページへ</router-link>
     </div>
   </div>
@@ -12,7 +16,35 @@
 
 <script>
 export default {
-  name: "TopPage"
+  name: "TopPage",
+
+  // ★ データを入れる変数
+  data() {
+    return {
+      viewData: null,  // ← API の結果がここに入る
+    };
+  },
+
+  // ★ APIを読みに行く
+  async created() {
+    try {
+      const res = await fetch("/api/getData");  
+      if (!res.ok) {
+        throw new Error("API error");
+      }
+
+      // JSON へ変換
+      const json = await res.json();
+
+      // ★ Vue のデータ変数へ代入
+      this.viewData = json;
+
+    } catch (err) {
+      console.error("API 読み込みエラー：", err);
+    }
+  },
+
+  methods: {}
 };
 </script>
 
@@ -33,10 +65,5 @@ h1 {
   border-radius: 8px;
   background-color: #f9f9f9;
 }
-
-router-link {
-  color: #42b983;
-  text-decoration: underline;
-  cursor: pointer;
-}
 </style>
+
