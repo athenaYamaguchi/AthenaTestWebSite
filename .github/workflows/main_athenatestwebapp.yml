@@ -7,6 +7,8 @@ on:
   push:
     branches:
       - main
+    paths:
+          - 'server/**'     # ← App Service ワークフローは server 配下のみで起動、フロント変更では起動しない
   workflow_dispatch:
 
 jobs:
@@ -62,4 +64,5 @@ jobs:
           app-name: 'AthenaTestWebApp'
           slot-name: 'Production'
           package: .
+
           
