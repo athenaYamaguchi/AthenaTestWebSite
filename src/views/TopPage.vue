@@ -4,7 +4,7 @@
     <p>ここがアプリの最初に表示されるページです。</p>
 
     <div class="welcome-box">
-      <p>読んだデータは viewData です test：</p>
+      <p>読んだデータは viewData です</p>
 
       <!-- 読み込んだデータを表示 -->
       <pre>{{ viewData }}</pre>
@@ -30,6 +30,7 @@ export default {
     try {
       const res = await fetch("/api/getData");  
       if (!res.ok) {
+        this.viewData = `API エラー（ステータス: ${res.status}）`
         throw new Error("API error");
       }
 
