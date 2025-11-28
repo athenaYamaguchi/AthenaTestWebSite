@@ -28,10 +28,13 @@ export default {
   // ★ APIを読みに行く
   async created() {
     try {
-      const res = await fetch("https://b22-function.azurewebsites.net/api/HttpTrigger");
+      const res = await fetch(
+        `https://b22-function.azurewebsites.net/api/HttpTrigger?code=${process.env.FUNCKEY_TEST}`
+      );
+
       if (!res.ok) {
-        this.viewData = `API エラー（ステータス: ${res.status}）`
-        throw new Error("API error");
+        this.viewData = `API エラー（ステータス ＝ ${res.status}）`;
+        return;
       }
 
       // JSON へ変換
