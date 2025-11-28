@@ -33,7 +33,7 @@ export default {
       );
 
       if (!res.ok) {
-        this.viewData = `API エラー（ステータス ＝ ${res.status}）`;
+        this.viewData = `API エラー（きー=${process.env.FUNCKEY_TEST} ステータス ＝ ${res.status}）`;
         return;
       }
 
