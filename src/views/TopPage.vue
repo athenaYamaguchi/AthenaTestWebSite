@@ -28,7 +28,7 @@ export default {
   // ★ APIを読みに行く
   async created() {
     try {
-      const res = await fetch("https://b22-function.azurewebsites.net/api/HttpTrigger?name=test_name");
+      const res = await fetch("https://b22-function.azurewebsites.net/api/HttpTrigger");
       if (!res.ok) {
         this.viewData = `API エラー（ステータス: ${res.status}）`
         throw new Error("API error");
