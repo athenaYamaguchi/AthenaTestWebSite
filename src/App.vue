@@ -14,7 +14,7 @@ export default {
     return {
       menuItems: [
         { icon: '🏠', key: 'TopPage',       label: 'トップページ',   route: '/' },
-        { key: 'settings-page',  label: '設定',          route: '/settings-page' }
+        { icon: '🧌', key: 'settings-page',  label: '設定',          route: '/settings-page' }
       ]
     };
   }
