@@ -13,7 +13,7 @@ export default {
   data() {
     return {
       menuItems: [
-        { icon: 'HomeIcon', key: 'TopPage',       label: 'トップページ',   route: '/' },
+        { icon: '🏠', key: 'TopPage',       label: 'トップページ',   route: '/' },
         { key: 'settings-page',  label: '設定',          route: '/settings-page' }
       ]
     };
