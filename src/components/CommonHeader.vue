@@ -1,7 +1,8 @@
 <template>
   <header class="header">
     <div class="header-inner">
-      <nav class="nav">
+      <!-- ■□□ メニュー -->
+      <nav class="nav left-area">
         <div class="dropdown" ref="dropdownRef">
           <button
             class="dropdown-toggle"
@@ -34,9 +35,17 @@
               </button>
             </li>
           </ul>
-          <div>aaaaaaaaaa</div>
         </div>
       </nav>
+      
+      <!-- □■□ タイトル -->
+      <div class="brand center-area">
+        <span class="brand-text">アプリタイトル</span>
+      </div>
+
+      <!-- □□■ 空き -->
+      <div class="right-area"></div>
+
     </div>
   </header>
 </template>
@@ -95,11 +104,25 @@ export default {
   color: #fff;
   padding: 8px 16px;
 }
+
 .header-inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  position: relative;
 }
+
+.left-area,
+.right-area {
+  min-width: 80px;
+}
+
+.center-area {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
 .brand {
   display: flex;
   align-items: center;
