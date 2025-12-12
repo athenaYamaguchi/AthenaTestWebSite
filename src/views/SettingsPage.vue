@@ -1,4 +1,9 @@
 <template>
+  <!-- 共通ヘッダを表示 -->
+  <CommonHeader 
+    :headerTitle=headerTitle
+  />
+
   <div class="home-page-page">
     <h1>ここは設定ページだよ！</h1>
     <p>ここがアプリの2に表示されるページです。</p>
@@ -11,8 +16,25 @@
 </template>
 
 <script>
+
+/**
+ * 画面のインポート
+ */
+
+// 共通ヘッダ
+import CommonHeader from '../components/CommonHeader.vue';
+
 export default {
-  name: "settings-page"
+  // 共通ヘッダ
+  components: { CommonHeader },
+  // ページ名
+  name: "settings-page",
+  // 変数
+  data() {
+    return {
+      headerTitle: "設定"
+    }
+  }
 };
 </script>
 

@@ -1,21 +1,14 @@
 <template>
   <div id="app">
-    <CommonHeader :menu-items="menuItems" />
     <router-view />
   </div>
 </template>
-
 <script>
-import CommonHeader from './components/CommonHeader.vue';
 
 export default {
-  components: { CommonHeader },
   data() {
     return {
-      menuItems: [
-        { icon: '🏠', key: 'TopPage',        label: 'トップページ',   route: '/' },
-        { icon: '🔧', key: 'settings-page',  label: '設定',          route: '/settings-page' }
-      ]
+      
     };
   }
 };

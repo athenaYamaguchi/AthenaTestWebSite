@@ -1,10 +1,15 @@
 <template>
+  <!-- 共通ヘッダを表示 -->
+  <CommonHeader 
+    :headerTitle=headerTitle
+  />
+
   <div class="home-page-page">
-    <h1>ホームページ</h1>
+    <h1>トップページ</h1>
     <p>ここがアプリの最初に表示されるページです。</p>
 
     <div class="welcome-box">
-      <p>読んだデータは viewData です</p>
+      <p>読んだデータは以下の通りです</p>
 
       <!-- 読み込んだデータを表示 -->
       <pre>{{ viewData }}</pre>
@@ -15,12 +20,23 @@
 </template>
 
 <script>
-export default {
-  name: "TopPage",
 
-  // ★ データを入れる変数
+/**
+ * 画面のインポート
+ */
+
+// 共通ヘッダ
+import CommonHeader from '../components/CommonHeader.vue';
+
+export default {
+  // 共通ヘッダ
+  components: { CommonHeader },
+  // ページ名
+  name: "TopPage",
+  // 変数
   data() {
     return {
+      headerTitle: "トップページ",
       viewData: null,  // ← API の結果がここに入る
     };
   },

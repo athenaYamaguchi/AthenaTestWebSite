@@ -40,11 +40,13 @@
       
       <!-- □■□ タイトル -->
       <div class="brand center-area">
-        <span class="brand-text">アプリタイトル</span>
+        <span class="brand-text">{{ headerTitle }}</span>
       </div>
 
       <!-- □□■ 空き -->
-      <div class="right-area"></div>
+      <div class="right-area">
+        
+      </div>
 
     </div>
   </header>
@@ -54,11 +56,15 @@
 export default {
   name: 'CommonHeader',
   props: {
+    headerTitle: {
+      type: String,
+      default: 'アプリタイトル'
+    },
     menuItems: {
       type: Array,
       default: () => [
-        { key: 'home-page', label: 'ホーム', route: '/' },
-        { key: 'settings-page', label: '設定', route: '/settings-page' }
+        { icon: '🏠', key: 'TopPage',        label: 'トップページ',   route: '/' },
+        { icon: '🔧', key: 'settings-page',  label: '設定',          route: '/settings-page' }
       ]
     }
   },
@@ -130,6 +136,7 @@ export default {
 }
 .brand-text {
   font-weight: 600;
+  font-size: 30px;
   letter-spacing: 0.2px;
 }
 
