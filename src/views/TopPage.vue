@@ -4,6 +4,8 @@
     :headerTitle=headerTitle
   />
 
+  <CommonTable/>
+
   <div class="home-page-page">
     <h1>トップページ</h1>
     <p>ここがアプリの最初に表示されるページです。</p>
@@ -27,10 +29,11 @@
 
 // 共通ヘッダ
 import CommonHeader from '../components/CommonHeader.vue';
+import CommonTable from '../components/CommonTable.vue';
 
 export default {
   // 共通ヘッダ
-  components: { CommonHeader },
+  components: { CommonHeader, CommonTable },
   // ページ名
   name: "TopPage",
   // 変数
