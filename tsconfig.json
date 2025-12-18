@@ -7,5 +7,12 @@
     {
       "path": "./tsconfig.app.json"
     }
-  ]
+  ],
+  "compilerOptions": {
+    "types": ["vite/client"],
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "jsx": "preserve",
+    "isolatedModules": true
+  },
 }
