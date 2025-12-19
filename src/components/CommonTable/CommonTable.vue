@@ -1,44 +1,50 @@
+
 <template>
   <div>
     <!-- タブ部分 -->
     <v-tabs v-model="tab">
       <v-tab
-        v-for="tabName in tabNames"
-        :key="tabName"
-        :value="tabName"
+        v-for="item in CommonTableData"
+        :key="item.key"
+        :value="item.key"
       >
-        {{ tabName }}
+        {{ item.tabLabel }}
       </v-tab>
     </v-tabs>
 
     <!-- タブの中身（動的コンポーネント） -->
     <v-window v-model="tab">
       <v-window-item
-        v-for="tabName in tabNames"
-        :key="tabName"
-        :value="tabName"
+        v-for="item in CommonTableData"
+        :key="item.key"
+        :value="item.key"
       >
-        <component :is="tabs[tabName]"></component>
+        <component 
+          :is="tabs[item.key]" 
+          :CommonTableData="item"
+        />
       </v-window-item>
     </v-window>
   </div>
 </template>
 
+
 <script setup lang="ts">
-import { ref, markRaw } from "vue";
-import CommonTableDetail from "./CommonTableDetail/CommonTableDetail.vue";
+  import { ref, markRaw } from "vue";
+  import CommonTableDetail from "./CommonTableDetail/CommonTableDetail.vue";
 
-// 引数としてタブ名を受け取る（例: ["one", "two", "three"]）
-const props = defineProps<{ tabNames: string[] }>();
+  import type {CommonTableInfo} from "./CommonTableType.ts";
+  
+  const props = defineProps<{ CommonTableData: CommonTableInfo[] }>();
 
-// 現在選択中のタブ
-const tab = ref(props.tabNames[0]);
+  const tab = ref(props.CommonTableData[0]?.key ?? "");
 
-// タブごとのコンポーネントを動的に生成
-const tabs: Record<string, any> = {};
-props.tabNames.forEach(name => {
-  tabs[name] = markRaw(CommonTableDetail); // 必要に応じて別コンポーネントに差し替え可能
-});
+  const tabs: Record<string, any> = {};
+  props.CommonTableData.forEach(item => {
+    tabs[item.key] = markRaw(CommonTableDetail);
+  });
+
+
 </script>
 
 <style scoped>

@@ -1,35 +1,38 @@
-<template>
-  <span>CommonTableDetailSerchBox</span>
 
+<template>
+  <v-container>
+    <span class="d-block mb-2">検索</span>
+
+    <v-row 
+      class="pa-0 ma-0"
+      style="margin-bottom: 6px;"
+      v-for="(columnData, index) in columnDatas"
+        :key="columnData.columnName"
+    >
+      <v-col cols="12">
+        <v-text-field
+          :label="columnData.columnName"
+          variant="outlined"
+          density="compact"
+          hide-details="auto"
+          class="mb-1"
+          clearable
+        ></v-text-field>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
-<script>
-export default {
-  name: 'CommonTableDetailSerchBox',
-  props: {
-    
-  },
 
-  data() {
-    return {
-      
-    };
-  },
+<script setup lang="ts">
 
-  methods: {
-    
-  },
+  import type {ColumnInfo} from "../../CommonTableType.ts";
 
-  mounted() {
-    
-  },
+  // 引数を取得
+  const props = defineProps<{ 
+    columnDatas: ColumnInfo[] ,
+    exeSearch?: (serchWords: any[]) 
+      => Promise<void>;
+  }>();
   
-  beforeUnmount () {
-    
-  }
-};
 </script>
-
-<style scoped>
-
-</style>
