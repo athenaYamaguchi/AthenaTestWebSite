@@ -1,6 +1,4 @@
 <template>
-  <span>CommonTableDetail</span>
-
   <v-row>
     <!-- 左側（絞り込み） -->
     <v-col cols="2">
