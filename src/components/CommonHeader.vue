@@ -1,3 +1,4 @@
+
 <template>
   <header class="header">
     <div class="header-inner">
@@ -37,71 +38,85 @@
           </ul>
         </div>
       </nav>
-      
+
       <!-- □■□ タイトル -->
       <div class="brand center-area">
         <span class="brand-text">{{ headerTitle }}</span>
       </div>
 
       <!-- □□■ 空き -->
-      <div class="right-area">
-        
-      </div>
-
+      <div class="right-area"></div>
     </div>
   </header>
 </template>
 
-<script>
-export default {
-  name: 'CommonHeader',
-  props: {
-    headerTitle: {
-      type: String,
-      default: 'アプリタイトル'
-    },
-    menuItems: {
-      type: Array,
-      default: () => [
-        { icon: '🏠', key: 'TopPage',        label: 'トップページ',   route: '/' },
-        { icon: '🔧', key: 'settings-page',  label: '設定',          route: '/settings-page' }
-      ]
-    }
-  },
-  data() {
-    return {
-      isOpen: false
-    };
-  },
-  methods: {
-    toggle() {
-      this.isOpen = !this.isOpen;
-    },
-    close() {
-      this.isOpen = false;
-    },
-    handleSelect(item) {
-      this.close();
-      if (item.route) {
-        this.$router.push(item.route); // Vue Router を使ってページ遷移
-      }
-      this.$emit('select', item);
-    },
-    handleClickOutside(e) {
-      const el = this.$refs.dropdownRef;
-      if (el && !el.contains(e.target)) {
-        this.close();
-      }
-    }
-  },
-  mounted() {
-    document.addEventListener('click', this.handleClickOutside);
-  },
+<script setup lang="ts">
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { useRouter } from 'vue-router'
 
-  beforeUnmount () {
-    document.removeEventListener('click', this.handleClickOutside);
+// Props定義
+interface MenuItem {
+  icon?: string
+  key?: string
+  label: string
+  title?: string
+  route?: string
+}
+
+const props = defineProps<{
+  headerTitle?: string
+  menuItems?: MenuItem[]
+}>()
+
+const emit = defineEmits<{
+  (e: 'select', item: MenuItem): void
+}>()
+
+// デフォルト値
+const headerTitle = props.headerTitle ?? 'アプリタイトル'
+const menuItems = props.menuItems ?? [
+  { icon: '🏠', key: 'TopPage', label: 'トップページ', route: '/' },
+  { icon: '🔧', key: 'settings-page', label: '設定', route: '/settings-page' }
+]
+
+// 状態管理
+const isOpen = ref(false)
+const dropdownRef = ref<HTMLElement | null>(null)
+
+const router = useRouter()
+
+// メニュー開閉
+const toggle = () => {
+  isOpen.value = !isOpen.value
+}
+const close = () => {
+  isOpen.value = false
+}
+
+// メニュー選択
+const handleSelect = (item: MenuItem) => {
+  close()
+  if (item.route) {
+    router.push(item.route)
   }
-};
+  emit('select', item)
+}
+
+// 外側クリックで閉じる
+const handleClickOutside = (e: MouseEvent) => {
+  const el = dropdownRef.value
+  if (el && !el.contains(e.target as Node)) {
+    close()
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
 </script>
 
 <style scoped>

@@ -49,7 +49,7 @@
 
     <v-col cols="2">
       <v-btn block color="primary" width="40" @click="createNew">
-        新規作成
+        新規追加
       </v-btn>
     </v-col>
   </v-row>
@@ -131,6 +131,26 @@ const createNew = () => {
 .my-table :deep(.v-data-table__th .v-data-table__th-content) {
   justify-content: flex-start !important;
   text-align: left !important;
+}
+
+/* ヘッダ全体の背景（thead）を上書き */
+.my-table :deep(.v-data-table__thead) {
+  background-color: #42b983 !important;
+}
+
+/* 各ヘッダセルの背景と文字色 */
+.my-table :deep(th.v-data-table__th) {
+  background-color: #42b983 !important;
+  color: white !important;
+}
+
+/* fixed-header 時の sticky オーバーレイ（::before）も上書き */
+.my-table :deep(th.v-data-table__th::before) {
+  background-color: #42b983 !important;
+  /* 既存の影・ボーダーを消したい場合は以下も検討
+  box-shadow: none !important;
+  border: none !important;
+  */
 }
 
 .my-table :deep(.v-data-table-column) {

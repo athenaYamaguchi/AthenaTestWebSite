@@ -1,10 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/TopPage.vue'
+import TopPage from '../views/TopPage.vue'
+import SettingsPage from '../views/SettingsPage.vue'
 
 const routes = [
   {
     path: '/',
-    component: Home
+    component: TopPage
+  },
+  {
+    path: '/settings-page',
+    component: SettingsPage
   }
 ]
 
