@@ -8,7 +8,7 @@
           <button
             class="dropdown-toggle"
             @click="toggle"
-            :aria-expanded="isOpen.toString()"
+            :aria-expanded="isOpen"
             aria-haspopup="menu"
           >
             Menu
