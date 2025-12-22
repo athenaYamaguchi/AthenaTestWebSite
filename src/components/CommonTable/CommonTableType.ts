@@ -2,6 +2,7 @@
  * 項目情報
  */
 export type ColumnInfo = {
+  columnTitle:    string;           // 項目名(表示用)
   columnName:     string;           // 項目名
   columnType:     number;           // 項目種別
   viewFlg:        boolean;          // 項目表示フラグ

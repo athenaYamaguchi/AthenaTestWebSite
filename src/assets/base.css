@@ -84,3 +84,80 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* 共通ボタンスタイル */
+.btn-primary {
+  background-color: #42b983; /* 基本色 */
+  color: white;              /* テキスト色 */
+  font-size: 16px;          /* フォントサイズ */
+  padding: 8px 16px;        /* 余白 */
+  border: none;             /* 枠線なし */
+  border-radius: 4px;       /* 角丸 */
+  cursor: pointer;          /* カーソル */
+  transition: background-color 0.3s ease;
+}
+
+/* ホバー時の効果 */
+.btn-primary:hover {
+  background-color: #369870 !important; /* 基本色より濃い緑 */
+}
+
+/* 無効状態 */
+.btn-primary:disabled {
+  background-color: #a8d5c2 !important; /* 基本色を薄くした色 */
+  cursor: not-allowed !important;
+  opacity: 0.7 !important; /* 無効感を出す */
+}
+
+
+/* 補助ボタンスタイル */
+.btn-outline  {
+  background-color: #fff; /* 基本色 */
+  color: #42b983;              /* テキスト色 */
+  border: 1px solid #42b983;
+  font-size: 16px;          /* フォントサイズ */
+  padding: 8px 16px;        /* 余白 */
+  border: none;             /* 枠線なし */
+  border-radius: 4px;       /* 角丸 */
+  cursor: pointer;          /* カーソル */
+  transition: background-color 0.3s ease;
+}
+
+/* ホバー時の効果 */
+.btn-outline :hover {
+  background-color: #e7f4ee !important; /* 基本色より濃い緑 */
+}
+
+/* 無効状態 */
+.btn-outline :disabled {
+  background-color: #e7f4ee !important; /* 基本色を薄くした色 */
+  cursor: not-allowed !important;
+  opacity: 0.7 !important; /* 無効感を出す */
+}
+
+
+/* 危険操作ボタンスタイル */
+.btn-danger {
+  background-color: #e53935; /* 基本色 */
+  color: #fff;              /* テキスト色 */
+  border: 1px solid #e53935;
+  font-size: 16px;          /* フォントサイズ */
+  padding: 8px 16px;        /* 余白 */
+  border: none;             /* 枠線なし */
+  border-radius: 4px;       /* 角丸 */
+  cursor: pointer;          /* カーソル */
+  transition: background-color 0.3s ease;
+}
+
+/* ホバー時の効果 */
+.btn-outline :hover {
+  background-color: #c62828 !important; /* 基本色より濃い緑 */
+}
+
+/* 無効状態 */
+.btn-outline :disabled {
+  background-color: #c62828 !important; /* 基本色を薄くした色 */
+  cursor: not-allowed !important;
+  opacity: 0.7 !important; /* 無効感を出す */
+}
+

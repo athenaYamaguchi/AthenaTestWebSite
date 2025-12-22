@@ -25,7 +25,7 @@
       <v-col cols="12">
         <v-btn
           block
-          color="primary"
+          class="btn-primary"
           width="100"
           @click="exeSearch([])"
         >

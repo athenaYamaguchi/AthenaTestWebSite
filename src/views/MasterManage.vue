@@ -1,22 +1,13 @@
 <template>
   <!-- 共通ヘッダを表示 -->
-  <CommonHeader :headerTitle="headerTitle" />
+  <CommonHeader
+    :headerTitle="headerTitle" 
+  />
 
-  <!-- タブ名を props で渡す -->
-  <CommonTable :CommonTableData="commonTableData" />
-
-  <div class="home-page-page">
-    <p>ここがアプリの最初に表示されるページです。</p>
-
-    <div class="welcome-box">
-      <p>読んだデータは以下の通りです</p>
-
-      <!-- 読み込んだデータを表示 -->
-      <pre>{{ viewData }}</pre>
-
-      <router-link to="/settings-page">設定ページへ</router-link>
-    </div>
-  </div>
+  <!-- テーブルの情報を表示 -->
+  <CommonTable
+    :CommonTableData="commonTableData" 
+  />
 </template>
 
 <script setup lang="ts">
@@ -26,13 +17,12 @@ import CommonTable from '../components/CommonTable/CommonTable.vue';
 
 import type { CommonTableInfo, SearchTemplateInfo, ColumnInfo } from '../components/CommonTable/CommonTableType';
 
-// headerTitle
-const headerTitle = ref("トップページ");
+// ヘッダタイトル
+const headerTitle = ref("マスタ管理");
 
-// tabNames
+// 項目情報
 const columnData: ColumnInfo[] = [
   {
-    columnTitle:    "項目名1",
     columnName:     "項目1",
     columnType:     0,
     viewFlg:        true,
@@ -40,7 +30,6 @@ const columnData: ColumnInfo[] = [
     isBulkEditable: true,
   },
   {
-    columnTitle:    "項目名2",
     columnName:     "項目2",
     columnType:     0,
     viewFlg:        false,
@@ -48,7 +37,6 @@ const columnData: ColumnInfo[] = [
     isBulkEditable: true,
   },
   {
-    columnTitle:    "項目名3",
     columnName:     "項目3",
     columnType:     0,
     viewFlg:        true,
@@ -59,7 +47,6 @@ const columnData: ColumnInfo[] = [
 
 const columnData2: ColumnInfo[] = [
   {
-    columnTitle:    "項目名4",
     columnName:     "項目4",
     columnType:     0,
     viewFlg:        true,
@@ -67,7 +54,6 @@ const columnData2: ColumnInfo[] = [
     isBulkEditable: true,
   },
   {
-    columnTitle:    "項目名5",
     columnName:     "項目5",
     columnType:     0,
     viewFlg:        false,
