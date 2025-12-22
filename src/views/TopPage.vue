@@ -3,7 +3,7 @@
   <CommonHeader :headerTitle="headerTitle" />
 
   <!-- タブ名を props で渡す -->
-  <CommonTable :CommonTableData="CommonTableData" />
+  <CommonTable :CommonTableData="commonTableData" />
 
   <div class="home-page-page">
     <p>ここがアプリの最初に表示されるページです。</p>
@@ -26,14 +26,11 @@ import CommonTable from '../components/CommonTable/CommonTable.vue';
 
 import type { CommonTableInfo, SearchTemplateInfo, ColumnInfo } from '../components/CommonTable/CommonTableType';
 
-// props はないので不要
-// コンポーネント登録は <script setup> では import するだけで OK
-
 // headerTitle
 const headerTitle = ref("トップページ");
 
 // tabNames
-const ColumnData: ColumnInfo[] = [
+const columnData: ColumnInfo[] = [
   {
     columnName:     "項目1",
     columnType:     0,
@@ -57,25 +54,61 @@ const ColumnData: ColumnInfo[] = [
   },
 ];
 
-const SearchTemplateData: SearchTemplateInfo[] = [
+const columnData2: ColumnInfo[] = [
+  {
+    columnName:     "項目4",
+    columnType:     0,
+    viewFlg:        true,
+    selectOptions:  ["ccc", "ddd"],
+    isBulkEditable: true,
+  },
+  {
+    columnName:     "項目5",
+    columnType:     0,
+    viewFlg:        false,
+    selectOptions:  ["eee", "fff"],
+    isBulkEditable: true,
+  },
+];
+
+const searchTemplateData: SearchTemplateInfo[] = [
   {
     templateLabel:  "テンプレート1",
     searchWords:    ["aaaa", "bbbb", "cccc"],
   },
+  {
+    templateLabel:  "テンプレート2",
+    searchWords:    ["dddd", "eeee", "ffff"],
+  },
+  {
+    templateLabel:  "テンプレート3",
+    searchWords:    ["gggg", "hhhh", "ffff"],
+  },
 ]
 
-const CommonTableData: CommonTableInfo[] = [
+const searchTemplateData2: SearchTemplateInfo[] = [
+  {
+    templateLabel:  "テンプレート4",
+    searchWords:    ["aaaa", "bbbb", "cccc"],
+  },
+  {
+    templateLabel:  "テンプレート5",
+    searchWords:    ["dddd", "eeee", "ffff"],
+  },
+]
+
+const commonTableData: CommonTableInfo[] = [
   { 
     key:      'one', 
     tabLabel: 'タブ1',
-    columns:  ColumnData,
-    searchTemplates:  SearchTemplateData,
+    columns:  columnData,
+    searchTemplates:  searchTemplateData,
   },
   { 
     key:      'two', 
     tabLabel: 'タブ2',
-    columns:  ColumnData,
-    searchTemplates:  SearchTemplateData,
+    columns:  columnData2,
+    searchTemplates:  searchTemplateData2,
   },
 ];
 

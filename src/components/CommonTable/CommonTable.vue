@@ -21,7 +21,7 @@
       >
         <component 
           :is="tabs[item.key]" 
-          :CommonTableData="item"
+          :commonTableData="item"
         />
       </v-window-item>
     </v-window>

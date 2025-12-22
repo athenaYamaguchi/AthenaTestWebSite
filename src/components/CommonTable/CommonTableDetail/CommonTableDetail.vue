@@ -4,13 +4,16 @@
     <v-col cols="2">
       <CommonTableDetailSerchBox 
         :exeSearch="exeSearch"
-        :columnDatas="CommonTableData.columns"
+        :columnDatas="commonTableData.columns"
       />
     </v-col>
 
     <!-- 右側（テーブルビュー） -->
     <v-col cols="10">
-      <CommonTableDetailView />
+      <CommonTableDetailView 
+        :columnDatas      = "commonTableData.columns"
+        :searchTemplates  = "commonTableData.searchTemplates"
+      />
     </v-col>
   </v-row>
 
@@ -25,7 +28,7 @@
 
   // 引数を取得
   const props = defineProps<{ 
-    CommonTableData: CommonTableInfo 
+    commonTableData: CommonTableInfo 
   }>();
 
   /**
@@ -35,14 +38,14 @@
    */
   const exeSearch = async (keywords: string[]): Promise<void> => {
     try {
-      if (typeof props.CommonTableData.fnSearch === "function") {
-        const result = await props.CommonTableData.fnSearch(keywords);
+      if (typeof props.commonTableData.fnSearch === "function") {
+        const result = await props.commonTableData.fnSearch(keywords);
         // 必要ならここで結果を store / emit / ローカル state に反映
         // 例）emit で親へ渡す:
         // emit('searched', { key: props.CommonTableData.key, result });
       } else {
         // フォールバック：検索関数が未設定の場合
-        console.warn("fnSearch is not provided for:", props.CommonTableData.key, keywords);
+        console.warn("fnSearch is not provided for:", props.commonTableData.key, keywords);
       }
     } catch (e) {
       console.error("exeSearch error:", e);
