@@ -114,9 +114,9 @@ const deleteSelected = () => {
   if (selected.value.length === 0) return
   const selectedCodes = new Set(selected.value.map(r => r.code))
   for (let i = items.value.length - 1; i >= 0; i--) {
-    if (selectedCodes.has(items.value[i].code)) {
-      items.value.splice(i, 1)
-    }
+    // if (selectedCodes.has(items.value[i].code)) {
+    //   items.value.splice(i, 1)
+    // }
   }
   selected.value = []
 }
