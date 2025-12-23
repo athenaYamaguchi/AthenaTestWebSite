@@ -44,8 +44,14 @@
         <span class="brand-text">{{ headerTitle }}</span>
       </div>
 
-      <!-- □□■ 空き -->
-      <div class="right-area"></div>
+      <!-- □□■ ロゴ -->
+      <div class="right-area">
+        <img 
+          src="@/assets/logo.png" 
+          alt="ロゴ" 
+          class="logo-image" 
+        />
+      </div>
     </div>
   </header>
 </template>
@@ -75,8 +81,24 @@ const emit = defineEmits<{
 // デフォルト値
 const headerTitle = props.headerTitle ?? 'アプリタイトル'
 const menuItems = props.menuItems ?? [
-  { icon: '🏠', key: 'TopPage', label: 'トップページ', route: '/' },
-  { icon: '🔧', key: 'settings-page', label: '設定', route: '/settings-page' }
+  { 
+    icon:   '🏠', 
+    key:    'TopPage', 
+    label:  'トップページ', 
+    route:  '/' 
+  },
+  { 
+    icon:   '🔧', 
+    key:    'settings-page', 
+    label:  '設定', 
+    route:  '/settings-page' 
+  },
+  { 
+    icon:   '📚', 
+    key:    'MasterManagePage', 
+    label:  'マスタ管理', 
+    route:  '/MasterManagePage' 
+  },
 ]
 
 // 状態管理
@@ -132,9 +154,16 @@ onBeforeUnmount(() => {
   position: relative;
 }
 
-.left-area,
+.left-area {
+  min-width: 80px;
+}
+
 .right-area {
   min-width: 80px;
+  position: absolute;
+  left: 99%;
+  transform: translateX(-50%);
+  text-align: center;
 }
 
 .center-area {
@@ -221,4 +250,13 @@ onBeforeUnmount(() => {
   width: 1.1em;
   text-align: center;
 }
+
+.logo-image {
+  height: 70px;       /* ヘッダーに合わせて調整 */
+  width: auto;
+  margin-top: 14px;   /* ← 下にずらす量 */
+  margin-right: 20px; /* ← 左にずらす量 */
+}
+
+
 </style>

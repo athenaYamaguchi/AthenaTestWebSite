@@ -35,6 +35,7 @@
       <template #item.actions="{ item }">
         <v-btn
           size="small"
+          class="btn-edit"
           variant="outlined"
           @click="editRow(item)"
         >
@@ -85,16 +86,28 @@ type Row = {
   name: string
   updatedAt: string
 }
+type Item = Record<string, unknown>;
 
-const headers: DataTableHeader<Row>[] = [
-  { title: 'コード',   width: '200px', value: 'code',      sortable: true, align: 'start' },
-  { title: '名称',     width: '200px', value: 'name',      sortable: true, align: 'start' },
-  { title: '更新日',   width: '140px', value: 'updatedAt', sortable: true, align: 'start' },
-  { title: '操作',     width: '120px', value: 'actions',   sortable: false, align: 'start' },
-]
+// カラムの情報からヘッダー情報を作成
+let headers: DataTableHeader<Item>[] = [];
+for (const col of props.columnDatas) {
+  headers.push({
+    title:      col.columnTitle,  // ColumnInfoの表示名
+    value:      col.columnName,   // Rowのキーに対応
+    sortable:   true,             // 固定でソート有り
+    align:      'start',          
+  });
+}
+// 編集ボタンは一律で追加
+headers.push({
+    title: '編集',     
+    value: 'actions',   
+    sortable: false, 
+    align: 'start' 
+  });
 
-const items = ref<Row[]>([
-  { code: 'M001', name: 'マスタA',        updatedAt: '2025-12-01' },
+const items = ref<Item[]>([
+  { USER_ID: 'M001', LAST_NAME: 'マスタA',        updatedAt: '2025-12-01' },
   { code: 'M002', name: 'マスタB',        updatedAt: '2025-12-05' },
   { code: 'T987', name: 'トランザクションX', updatedAt: '2025-12-10' },
   { code: 'T988', name: 'トランザクションY', updatedAt: '2025-12-12' },
@@ -103,7 +116,7 @@ const items = ref<Row[]>([
 ])
 
 // 選択行（return-object に合わせて Row[]）
-const selected = ref<Row[]>([])
+const selected = ref<Item[]>([])
 
 const exeSearch = async (keywords: string[]): Promise<void> => {
   try {
@@ -114,7 +127,7 @@ const exeSearch = async (keywords: string[]): Promise<void> => {
 }
 
 // 行「編集」クリック時
-const editRow = (row: Row) => {
+const editRow = (row: Item) => {
   // ここでダイアログ表示や画面遷移などを行う
   // 例：コンソールに出す（差し替えてください）
   console.log('edit row:', row)
@@ -177,24 +190,21 @@ const createNew = () => {
 
 /* 編集ボタンスタイル */
 .btn-edit  {
-  background-color: #fff; /* 基本色 */
-  color: #42b983;              /* テキスト色 */
-  border: 1px solid #42b983;
-  font-size: 16px;          /* フォントサイズ */
-  padding: 8px 16px;        /* 余白 */
+  background-color: #42b983; /* 基本色 */
+  color: white;              /* テキスト色 */
   border: none;             /* 枠線なし */
   border-radius: 4px;       /* 角丸 */
   cursor: pointer;          /* カーソル */
   transition: background-color 0.3s ease;
 }
 
-/* ホバー時の効果 */
-.btn-outline :hover {
-  background-color: #e7f4ee !important; /* 基本色より濃い緑 */
+/* 編集ボタン ホバー時の効果 */
+.btn-edit :hover {
+  background-color: #338d65 !important; /* 基本色より濃い緑 */
 }
 
-/* 無効状態 */
-.btn-outline :disabled {
+/* 編集ボタン 無効状態 */
+.btn-edit :disabled {
   background-color: #e7f4ee !important; /* 基本色を薄くした色 */
   cursor: not-allowed !important;
   opacity: 0.7 !important; /* 無効感を出す */

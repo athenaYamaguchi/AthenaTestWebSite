@@ -33,5 +33,5 @@ export type CommonTableInfo = {
   fnInsert?: (newDatas: any[]) 
     => Promise<any>;                        // 新規登録メソッド
   fnDelete?: (targetDatas: any[]) 
-    => Promise<any>;                        // 新規登録メソッド
+    => Promise<any>;                        // 削除メソッド
 };

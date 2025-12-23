@@ -14,39 +14,17 @@
 import { ref, onMounted } from 'vue';
 import CommonHeader from '../components/CommonHeader.vue';
 import CommonTable from '../components/CommonTable/CommonTable.vue';
+import {tableInfoMUser} from '../composables/TableInfo_M_User.ts';
 
-import type { CommonTableInfo, SearchTemplateInfo, ColumnInfo } from '../components/CommonTable/CommonTableType';
+import type { CommonTableInfo, SearchTemplateInfo, ColumnInfo } from '../components/CommonTable/CommonTableType.ts';
 
 // ヘッダタイトル
 const headerTitle = ref("マスタ管理");
 
 // 項目情報
-const columnData: ColumnInfo[] = [
-  {
-    columnName:     "項目1",
-    columnType:     0,
-    viewFlg:        true,
-    selectOptions:  ["aaa", "bbb"],
-    isBulkEditable: true,
-  },
-  {
-    columnName:     "項目2",
-    columnType:     0,
-    viewFlg:        false,
-    selectOptions:  ["ccc", "ddd"],
-    isBulkEditable: true,
-  },
-  {
-    columnName:     "項目3",
-    columnType:     0,
-    viewFlg:        true,
-    selectOptions:  ["eee", "fff"],
-    isBulkEditable: false,
-  },
-];
-
 const columnData2: ColumnInfo[] = [
   {
+    columnTitle:    "項目4",
     columnName:     "項目4",
     columnType:     0,
     viewFlg:        true,
@@ -54,6 +32,7 @@ const columnData2: ColumnInfo[] = [
     isBulkEditable: true,
   },
   {
+    columnTitle:    "項目5",
     columnName:     "項目5",
     columnType:     0,
     viewFlg:        false,
@@ -61,21 +40,6 @@ const columnData2: ColumnInfo[] = [
     isBulkEditable: true,
   },
 ];
-
-const searchTemplateData: SearchTemplateInfo[] = [
-  {
-    templateLabel:  "テンプレート1",
-    searchWords:    ["aaaa", "bbbb", "cccc"],
-  },
-  {
-    templateLabel:  "テンプレート2",
-    searchWords:    ["dddd", "eeee", "ffff"],
-  },
-  {
-    templateLabel:  "テンプレート3",
-    searchWords:    ["gggg", "hhhh", "ffff"],
-  },
-]
 
 const searchTemplateData2: SearchTemplateInfo[] = [
   {
@@ -89,12 +53,7 @@ const searchTemplateData2: SearchTemplateInfo[] = [
 ]
 
 const commonTableData: CommonTableInfo[] = [
-  { 
-    key:      'one', 
-    tabLabel: 'タブ1',
-    columns:  columnData,
-    searchTemplates:  searchTemplateData,
-  },
+  tableInfoMUser,
   { 
     key:      'two', 
     tabLabel: 'タブ2',

@@ -4,13 +4,12 @@
     <span class="d-block mb-2">検索</span>
 
     <v-row 
-      style="margin-bottom: 6px;"
       v-for="(columnData, index) in columnDatas"
         :key="columnData.columnName"
     >
       <v-col cols="12">
         <v-text-field
-          :label="columnData.columnName"
+          :label="columnData.columnTitle"
           variant="outlined"
           density="compact"
           hide-details="auto"
@@ -19,14 +18,11 @@
       </v-col>
     </v-row>
 
-    <v-row 
-      style="margin-bottom: 6px;"
-    >
+    <v-row>
       <v-col cols="12">
         <v-btn
           block
           class="btn-primary"
-          width="100"
           @click="exeSearch([])"
         >
           検索
