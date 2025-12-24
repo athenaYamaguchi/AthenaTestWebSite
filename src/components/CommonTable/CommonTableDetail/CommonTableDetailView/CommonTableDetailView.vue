@@ -102,14 +102,16 @@ headers.push({
     align: 'start' 
   });
 
-let items
+let items: Item[]
 if (props.commonTableData.fnSearch != null) {
-  items = props.commonTableData.fnSearch([
-    {},
-  ]);
+  const result = props.commonTableData.fnSearch
+      ? await props.commonTableData.fnSearch([{}])
+      : [];
+
+  items = result; // ✅ 配列を代入
 }
 else {
-  items = ref<Item[]>([
+  items = <Item[]>([
     { USER_ID: 'M001', LAST_NAME: 'マスタA',        updatedAt: '2025-12-01' },
     { code: 'M002', name: 'マスタB',        updatedAt: '2025-12-05' },
     { code: 'T987', name: 'トランザクションX', updatedAt: '2025-12-10' },
@@ -143,11 +145,11 @@ const editRow = (row: Item) => {
 const deleteSelected = () => {
   if (selected.value.length === 0) return
   const selectedCodes = new Set(selected.value.map(r => r.code))
-  for (let i = items.value.length - 1; i >= 0; i--) {
-    // if (selectedCodes.has(items.value[i].code)) {
-    //   items.value.splice(i, 1)
-    // }
-  }
+  // for (let i = items.value.length - 1; i >= 0; i--) {
+  //   if (selectedCodes.has(items.value[i].code)) {
+  //     items.value.splice(i, 1)
+  //   }
+  // }
   selected.value = []
 }
 
