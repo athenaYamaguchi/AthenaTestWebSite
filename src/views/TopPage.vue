@@ -122,18 +122,43 @@ const viewData = ref<unknown>(null);
 
 // API 呼び出し
 onMounted(
+  // async () => {
+  //   try {
+  //     // 以下コメント解除して実際の API 呼び出しに利用
+  //     const res = await fetch(`https://b22-function.azurewebsites.net/api/HttpTrigger2`);
+  //     if (!res.ok) {
+  //       viewData.value = `API エラー（ステータス: ${res.status}）`;
+  //       throw new Error("API error");
+  //     }
+  //     const json = await res.json();
+  //     viewData.value = json;
+  //   } catch (err) {
+  //     console.error("API 読み込みエラー：", err);
+  //   }
+  // }
   async () => {
     try {
-      // 以下コメント解除して実際の API 呼び出しに利用
-      const res = await fetch(`https://b22-function.azurewebsites.net/api/HttpTrigger2`);
+      const payload = {
+        name: '山口',
+        options: { mode: 'fast', retry: 1 }
+      };
+
+      const res = await fetch('https://b22-function.azurewebsites.net/api/HttpTrigger2', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
       if (!res.ok) {
-        viewData.value = `API エラー（ステータス: ${res.status}）`;
-        throw new Error("API error");
+        throw new Error(`API error: ${res.status}`);
       }
       const json = await res.json();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       viewData.value = json;
     } catch (err) {
-      console.error("API 読み込みエラー：", err);
+      console.error('API 読み込みエラー：', err);
     }
   }
 );
