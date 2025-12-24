@@ -103,6 +103,7 @@ headers.push({
   });
   
 let items
+console.log("itemsセット開始"); 
 items = ref<Item[]>([
     { USER_ID: 'M001', LAST_NAME: 'マスタA',        updatedAt: '2025-12-01' },
     { code: 'M002', name: 'マスタB',        updatedAt: '2025-12-05' },
@@ -111,10 +112,13 @@ items = ref<Item[]>([
     { code: 'T989', name: 'トランザクションZ', updatedAt: '2025-12-14' },
     { code: 'M003', name: 'マスタC',        updatedAt: '2025-12-15' },
   ])
+console.log("itemsセット完了"); 
 if (props.commonTableData.fnSearch != null) {
+  console.log("実施開始"); 
   const result = await props.commonTableData.fnSearch([
     {},
   ]);
+  console.log("実施終了"); 
   console.log(result); 
 }
 // if (props.commonTableData.fnSearch != null) {
