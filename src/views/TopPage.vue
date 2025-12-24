@@ -143,7 +143,7 @@ onMounted(
         options: { mode: 'fast', retry: 1 }
       };
 
-      const res = await fetch('https://b22-function.azurewebsites.net/api/HttpTrigger2', {
+      const res = await fetch('https://b22-function.azurewebsites.net/api/getM_Users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
