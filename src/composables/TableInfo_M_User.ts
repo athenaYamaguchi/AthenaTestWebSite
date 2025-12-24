@@ -147,6 +147,7 @@ export const searchTable = async (
 
   } catch (e) {
     console.error('fnSearch error:', e);
+    throw e;
     return []; // 失敗時は空配列が扱いやすい
   }
 };
