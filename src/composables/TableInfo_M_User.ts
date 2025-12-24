@@ -132,17 +132,17 @@ const SearchTable = async (
       // 成功
 
       // 結果を取得
-      const jsonRows = await res.json();
+      const ansJson = await res.json();
       // データ分だけ戻り値を作成する
-      for (const jsonRow of jsonRows) {
+      for (const item of ansJson.items) {
         items.value.push({
-          [COL_USER_ID.columnName]:         jsonRow[COL_USER_ID.columnName],
-          [COL_LAST_NAME.columnName]:       jsonRow[COL_LAST_NAME.columnName],
-          [COL_FIRST_NAME.columnName]:      jsonRow[COL_FIRST_NAME.columnName],
-          [COL_LAST_NAME_KANA.columnName]:  jsonRow[COL_LAST_NAME_KANA.columnName],
-          [COL_FIRST_NAME_KANA.columnName]: jsonRow[COL_FIRST_NAME_KANA.columnName],
-          [COL_START_DATE.columnName]:      jsonRow[COL_START_DATE.columnName],
-          [COL_END_DATE.columnName]:        jsonRow[COL_END_DATE.columnName],
+          [COL_USER_ID.columnName]:         item[COL_USER_ID.columnName],
+          [COL_LAST_NAME.columnName]:       item[COL_LAST_NAME.columnName],
+          [COL_FIRST_NAME.columnName]:      item[COL_FIRST_NAME.columnName],
+          [COL_LAST_NAME_KANA.columnName]:  item[COL_LAST_NAME_KANA.columnName],
+          [COL_FIRST_NAME_KANA.columnName]: item[COL_FIRST_NAME_KANA.columnName],
+          [COL_START_DATE.columnName]:      item[COL_START_DATE.columnName],
+          [COL_END_DATE.columnName]:        item[COL_END_DATE.columnName],
         });
       }
     }
