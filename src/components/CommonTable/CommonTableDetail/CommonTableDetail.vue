@@ -11,6 +11,7 @@
     <!-- 右側（テーブルビュー） -->
     <v-col cols="10">
       <CommonTableDetailView 
+        :commonTableData  = "commonTableData"
         :columnDatas      = "commonTableData.columns"
         :searchTemplates  = "commonTableData.searchTemplates"
       />

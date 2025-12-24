@@ -73,19 +73,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { DataTableHeader } from 'vuetify'
-import type { ColumnInfo, SearchTemplateInfo } from '../../CommonTableType.ts'
+import type { CommonTableInfo, ColumnInfo, SearchTemplateInfo } from '../../CommonTableType.ts'
 
 // 引数を取得
 const props = defineProps<{
-  columnDatas: ColumnInfo[]            // 項目情報
-  searchTemplates: SearchTemplateInfo[]// 検索テンプレート情報
+  commonTableData:  CommonTableInfo
+  columnDatas:      ColumnInfo[]            // 項目情報
+  searchTemplates:  SearchTemplateInfo[]// 検索テンプレート情報
 }>()
 
-type Row = {
-  code: string
-  name: string
-  updatedAt: string
-}
 type Item = Record<string, unknown>;
 
 // カラムの情報からヘッダー情報を作成
@@ -106,14 +102,22 @@ headers.push({
     align: 'start' 
   });
 
-const items = ref<Item[]>([
-  { USER_ID: 'M001', LAST_NAME: 'マスタA',        updatedAt: '2025-12-01' },
-  { code: 'M002', name: 'マスタB',        updatedAt: '2025-12-05' },
-  { code: 'T987', name: 'トランザクションX', updatedAt: '2025-12-10' },
-  { code: 'T988', name: 'トランザクションY', updatedAt: '2025-12-12' },
-  { code: 'T989', name: 'トランザクションZ', updatedAt: '2025-12-14' },
-  { code: 'M003', name: 'マスタC',        updatedAt: '2025-12-15' },
-])
+let items
+if (props.commonTableData.fnSearch != null) {
+  items = props.commonTableData.fnSearch([
+    {},
+  ]);
+}
+else {
+  items = ref<Item[]>([
+    { USER_ID: 'M001', LAST_NAME: 'マスタA',        updatedAt: '2025-12-01' },
+    { code: 'M002', name: 'マスタB',        updatedAt: '2025-12-05' },
+    { code: 'T987', name: 'トランザクションX', updatedAt: '2025-12-10' },
+    { code: 'T988', name: 'トランザクションY', updatedAt: '2025-12-12' },
+    { code: 'T989', name: 'トランザクションZ', updatedAt: '2025-12-14' },
+    { code: 'M003', name: 'マスタC',        updatedAt: '2025-12-15' },
+  ])
+}
 
 // 選択行（return-object に合わせて Row[]）
 const selected = ref<Item[]>([])

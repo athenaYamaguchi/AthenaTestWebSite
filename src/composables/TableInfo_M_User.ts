@@ -3,66 +3,84 @@
  */
 
 import { ref } from 'vue'
-import type { CommonTableInfo, SearchTemplateInfo, ColumnInfo } from '../components/CommonTable/CommonTableType';
+import type { CommonTableInfo, SearchTemplateInfo, ColumnInfo} from '../components/CommonTable/CommonTableType';
+import { COLTYPE} from '../components/CommonTable/CommonTableType';
+
+// 項目名
+type COL_INFO = {
+  columnTitle:    string,       // 項目タイトル (テーブル表示項目名)
+  columnName:     string,       // 内部ID
+  columnType:     number,       // 種別
+  viewFlg:        boolean,      // 表示設定フラグ
+  selectOptions:  string[],     // 選択肢 (種別によっては不要)
+  isBulkEditable: boolean,      // 編集可能フラグ
+}
+const COL_USER_ID: COL_INFO = {
+  columnTitle:    "ユーザーID",           
+  columnName:     "USER_ID",              
+  columnType:     COLTYPE.FREESTRINGUM,   
+  viewFlg:        true,                   
+  selectOptions:  [],                     
+  isBulkEditable: true,                   
+}
+const COL_LAST_NAME: COL_INFO = {
+  columnTitle:    "氏",                   
+  columnName:     "LAST_NAME",            
+  columnType:     COLTYPE.FREESTRINGUM,   
+  viewFlg:        true,                   
+  selectOptions:  [],                     
+  isBulkEditable: true,                   
+}
+const COL_FIRST_NAME: COL_INFO = {
+  columnTitle:    "名",                   
+  columnName:     "FIRST_NAME",           
+  columnType:     COLTYPE.FREESTRINGUM,   
+  viewFlg:        true,                   
+  selectOptions:  [],                     
+  isBulkEditable: true,                   
+}
+const COL_LAST_NAME_KANA: COL_INFO = {
+  columnTitle:    "氏(ふりがな)",         
+  columnName:     "LAST_NAME_KANA",       
+  columnType:     COLTYPE.FREESTRINGUM,   
+  viewFlg:        true,                   
+  selectOptions:  [],                     
+  isBulkEditable: true,                   
+}
+const COL_FIRST_NAME_KANA: COL_INFO = {
+  columnTitle:    "名(ふりがな)",         
+  columnName:     "FIRST_NAME_KANA",      
+  columnType:     COLTYPE.FREESTRINGUM,   
+  viewFlg:        true,                   
+  selectOptions:  [],                     
+  isBulkEditable: true,                   
+}
+const COL_START_DATE: COL_INFO = {
+  columnTitle:    "利用開始日",         
+  columnName:     "START_DATE",      
+  columnType:     COLTYPE.DATE,   
+  viewFlg:        true,                   
+  selectOptions:  [],                     
+  isBulkEditable: true,                   
+}
+const COL_END_DATE: COL_INFO = {
+  columnTitle:    "利用終了日",         
+  columnName:     "END_DATE",      
+  columnType:     COLTYPE.DATE,   
+  viewFlg:        true,                   
+  selectOptions:  [],                     
+  isBulkEditable: true,                   
+}
 
 // 項目情報
 const columnData: ColumnInfo[] = [
-  {
-    columnTitle:    "ユーザーID",
-    columnName:     "USER_ID",
-    columnType:     0,
-    viewFlg:        true,
-    selectOptions:  ["aaa", "bbb"],
-    isBulkEditable: true,
-  },
-  {
-    columnTitle:    "氏",
-    columnName:     "LAST_NAME",
-    columnType:     0,
-    viewFlg:        false,
-    selectOptions:  ["ccc", "ddd"],
-    isBulkEditable: true,
-  },
-  {
-    columnTitle:    "名",
-    columnName:     "FIRST_NAME",
-    columnType:     0,
-    viewFlg:        true,
-    selectOptions:  ["eee", "fff"],
-    isBulkEditable: false,
-  },
-  {
-    columnTitle:    "氏(ふりがな)",
-    columnName:     "LAST_NAME_KANA",
-    columnType:     0,
-    viewFlg:        false,
-    selectOptions:  ["eee", "fff"],
-    isBulkEditable: false,
-  },
-  {
-    columnTitle:    "名(ふりがな)",
-    columnName:     "FIRST_NAME_KANA",
-    columnType:     0,
-    viewFlg:        false,
-    selectOptions:  ["eee", "fff"],
-    isBulkEditable: false,
-  },
-  {
-    columnTitle:    "利用開始日",
-    columnName:     "START_DATE",
-    columnType:     0,
-    viewFlg:        false,
-    selectOptions:  ["eee", "fff"],
-    isBulkEditable: false,
-  },
-  {
-    columnTitle:    "利用終了日",
-    columnName:     "END_DATE",
-    columnType:     0,
-    viewFlg:        false,
-    selectOptions:  ["eee", "fff"],
-    isBulkEditable: false,
-  },
+  COL_USER_ID,
+  COL_LAST_NAME,
+  COL_FIRST_NAME,
+  COL_LAST_NAME_KANA,
+  COL_FIRST_NAME_KANA,
+  COL_START_DATE,
+  COL_END_DATE,
 ];
 
 const searchTemplateData: SearchTemplateInfo[] = [
@@ -93,11 +111,43 @@ const SearchTable = async (
 
   try {
     // テーブルからデータを読み出し
+    const payload = {
+      name: '山口',
+      options: { mode: 'fast', retry: 1 }
+    };
 
+    const res = await fetch('https://b22-function.azurewebsites.net/api/getM_Users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      // 失敗
+      throw new Error(`API error: ${res.status}`);
+    }
+    else {
+      // 成功
+
+      // 結果を取得
+      const jsonRows = await res.json();
+      // データ分だけ戻り値を作成する
+      for (const jsonRow of jsonRows) {
+        items.value.push({
+          [COL_USER_ID.columnName]:         jsonRow[COL_USER_ID.columnName],
+          [COL_LAST_NAME.columnName]:       jsonRow[COL_LAST_NAME.columnName],
+          [COL_FIRST_NAME.columnName]:      jsonRow[COL_FIRST_NAME.columnName],
+          [COL_LAST_NAME_KANA.columnName]:  jsonRow[COL_LAST_NAME_KANA.columnName],
+          [COL_FIRST_NAME_KANA.columnName]: jsonRow[COL_FIRST_NAME_KANA.columnName],
+          [COL_START_DATE.columnName]:      jsonRow[COL_START_DATE.columnName],
+          [COL_END_DATE.columnName]:        jsonRow[COL_END_DATE.columnName],
+        });
+      }
+    }
 
     // 結果をセット
-
-
     return items;
 
   } catch (e) {
@@ -106,8 +156,9 @@ const SearchTable = async (
 }
 
 export const tableInfoMUser: CommonTableInfo = { 
-  key:      'one', 
-  tabLabel: 'ユーザー情報',
-  columns:  columnData,
+  key:              'one', 
+  tabLabel:         'ユーザー情報',
+  columns:          columnData,
   searchTemplates:  searchTemplateData,
+  fnSearch:         SearchTable,
 };

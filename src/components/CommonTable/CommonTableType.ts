@@ -1,4 +1,14 @@
 /**
+ * 項目種別
+ */
+export const COLTYPE = {
+  NUM:            0,  // 数値
+  FREESTRINGUM:   1,  // 自由入力文字列
+  SELECTLIST:     2,  // 選択式
+  DATE:           3,  // 日付
+}
+
+/**
  * 項目情報
  */
 export type ColumnInfo = {
