@@ -102,16 +102,19 @@ headers.push({
     align: 'start' 
   });
 
-let items: Item[]
+  
+let items
 if (props.commonTableData.fnSearch != null) {
-  const result = props.commonTableData.fnSearch
-      ? await props.commonTableData.fnSearch([{}])
-      : [];
+  const result = await props.commonTableData.fnSearch([
+    {},
+  ]);
 
-  items = result; // ✅ 配列を代入
+  items = ref<Item[]>(
+    result
+  );
 }
 else {
-  items = <Item[]>([
+  items = ref<Item[]>([
     { USER_ID: 'M001', LAST_NAME: 'マスタA',        updatedAt: '2025-12-01' },
     { code: 'M002', name: 'マスタB',        updatedAt: '2025-12-05' },
     { code: 'T987', name: 'トランザクションX', updatedAt: '2025-12-10' },
@@ -150,7 +153,7 @@ const deleteSelected = () => {
   //     items.value.splice(i, 1)
   //   }
   // }
-  selected.value = []
+  // selected.value = []
 }
 
 const createNew = () => {
