@@ -115,7 +115,7 @@ if (props.commonTableData.fnSearch != null) {
   const result = await props.commonTableData.fnSearch([
     {},
   ]);
-  console.log(result);
+  console.log(result); 
 }
 // if (props.commonTableData.fnSearch != null) {
 //   const result = await props.commonTableData.fnSearch([
