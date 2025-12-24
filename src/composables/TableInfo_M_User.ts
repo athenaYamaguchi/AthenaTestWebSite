@@ -127,6 +127,7 @@ export const searchTable = async (
     }
 
     const ansJson = await res.json();
+    console.log(ansJson);
 
     // 防御的チェック：items が配列か
     const rows: any[] = Array.isArray(ansJson?.items) ? ansJson.items : [];
