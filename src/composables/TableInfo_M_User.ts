@@ -144,7 +144,7 @@ export const searchTable = async (
       )
     );
 
-    return items; // ✅ 生配列で返す
+    return items;
 
   } catch (e) {
     console.error('fnSearch error:', e);

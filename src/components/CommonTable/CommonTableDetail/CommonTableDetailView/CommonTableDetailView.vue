@@ -104,17 +104,7 @@ headers.push({
 
   
 let items
-if (props.commonTableData.fnSearch != null) {
-  const result = await props.commonTableData.fnSearch([
-    {},
-  ]);
-
-  items = ref<Item[]>(
-    result
-  );
-}
-else {
-  items = ref<Item[]>([
+items = ref<Item[]>([
     { USER_ID: 'M001', LAST_NAME: 'マスタA',        updatedAt: '2025-12-01' },
     { code: 'M002', name: 'マスタB',        updatedAt: '2025-12-05' },
     { code: 'T987', name: 'トランザクションX', updatedAt: '2025-12-10' },
@@ -122,7 +112,31 @@ else {
     { code: 'T989', name: 'トランザクションZ', updatedAt: '2025-12-14' },
     { code: 'M003', name: 'マスタC',        updatedAt: '2025-12-15' },
   ])
+if (props.commonTableData.fnSearch != null) {
+  const result = await props.commonTableData.fnSearch([
+    {},
+  ]);
+  console.log(result);
 }
+// if (props.commonTableData.fnSearch != null) {
+//   const result = await props.commonTableData.fnSearch([
+//     {},
+//   ]);
+
+//   items = ref<Item[]>(
+//     result
+//   );
+// }
+// else {
+//   items = ref<Item[]>([
+//     { USER_ID: 'M001', LAST_NAME: 'マスタA',        updatedAt: '2025-12-01' },
+//     { code: 'M002', name: 'マスタB',        updatedAt: '2025-12-05' },
+//     { code: 'T987', name: 'トランザクションX', updatedAt: '2025-12-10' },
+//     { code: 'T988', name: 'トランザクションY', updatedAt: '2025-12-12' },
+//     { code: 'T989', name: 'トランザクションZ', updatedAt: '2025-12-14' },
+//     { code: 'M003', name: 'マスタC',        updatedAt: '2025-12-15' },
+//   ])
+// }
 
 // 選択行（return-object に合わせて Row[]）
 const selected = ref<Item[]>([])
