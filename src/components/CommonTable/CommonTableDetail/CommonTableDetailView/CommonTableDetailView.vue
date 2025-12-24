@@ -112,12 +112,12 @@ items = ref<Item[]>([
     { code: 'T989', name: 'トランザクションZ', updatedAt: '2025-12-14' },
     { code: 'M003', name: 'マスタC',        updatedAt: '2025-12-15' },
   ])
-if (props.commonTableData.fnSearch != null) {
-  const result = await props.commonTableData.fnSearch([
-    {},
-  ]);
-  console.log(result);
-}
+// if (props.commonTableData.fnSearch != null) {
+//   const result = await props.commonTableData.fnSearch([
+//     {},
+//   ]);
+//   console.log(result);
+// }
 // if (props.commonTableData.fnSearch != null) {
 //   const result = await props.commonTableData.fnSearch([
 //     {},
