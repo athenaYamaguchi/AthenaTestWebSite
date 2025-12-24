@@ -6,6 +6,8 @@ import { ref } from 'vue'
 import type { CommonTableInfo, SearchTemplateInfo, ColumnInfo} from '../components/CommonTable/CommonTableType';
 import { COLTYPE} from '../components/CommonTable/CommonTableType';
 
+// テーブル用の型
+type Item = Record<string, unknown>;
 // 項目名
 type COL_INFO = {
   columnTitle:    string,       // 項目タイトル (テーブル表示項目名)
@@ -15,6 +17,8 @@ type COL_INFO = {
   selectOptions:  string[],     // 選択肢 (種別によっては不要)
   isBulkEditable: boolean,      // 編集可能フラグ
 }
+
+// 実体をセット
 const COL_USER_ID: COL_INFO = {
   columnTitle:    "ユーザーID",           
   columnName:     "USER_ID",              
@@ -102,63 +106,55 @@ const searchTemplateData: SearchTemplateInfo[] = [
  * 検索メソッド
  * @param keywords 
  */
-const SearchTable = async (
-  keywords: any[]
-): Promise<any> => {
-  // 戻り値を定義
-  type Item = Record<string, unknown>;
-  const items = ref<Item[]>([])
 
+export const searchTable = async (
+  searchWords: any[]
+): Promise<Item[]> => {
   try {
-    // テーブルからデータを読み出し
     const payload = {
       name: '山口',
-      options: { mode: 'fast', retry: 1 }
+      options: { mode: 'fast', retry: 1 },
     };
 
     const res = await fetch('https://b22-function.azurewebsites.net/api/getM_Users', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
 
     if (!res.ok) {
-      // 失敗
       throw new Error(`API error: ${res.status}`);
     }
-    else {
-      // 成功
 
-      // 結果を取得
-      const ansJson = await res.json();
-      // データ分だけ戻り値を作成する
-      for (const item of ansJson.items) {
-        items.value.push({
-          [COL_USER_ID.columnName]:         item[COL_USER_ID.columnName],
-          [COL_LAST_NAME.columnName]:       item[COL_LAST_NAME.columnName],
-          [COL_FIRST_NAME.columnName]:      item[COL_FIRST_NAME.columnName],
-          [COL_LAST_NAME_KANA.columnName]:  item[COL_LAST_NAME_KANA.columnName],
-          [COL_FIRST_NAME_KANA.columnName]: item[COL_FIRST_NAME_KANA.columnName],
-          [COL_START_DATE.columnName]:      item[COL_START_DATE.columnName],
-          [COL_END_DATE.columnName]:        item[COL_END_DATE.columnName],
-        });
-      }
+    const ansJson = await res.json();
+
+    // 防御的チェック：items が配列か
+    const rows: any[] = Array.isArray(ansJson?.items) ? ansJson.items : [];
+    if (!rows.length) {
+      // レスポンスが想定外の場合は空配列で返す
+      console.warn('fnSearch: items is empty or not an array.', ansJson);
+      return [];
     }
 
-    // 結果をセット
-    return items;
+    // 列定義に従って詰める（動的キー）
+    const items: Item[] = rows.map((row) =>
+      Object.fromEntries(
+        columnData.map((col) => [col.columnName, row[col.columnName]])
+      )
+    );
+
+    return items; // ✅ 生配列で返す
 
   } catch (e) {
-    console.error('fnSearch error:', e)
+    console.error('fnSearch error:', e);
+    return []; // 失敗時は空配列が扱いやすい
   }
-}
+};
 
 export const tableInfoMUser: CommonTableInfo = { 
   key:              'one', 
   tabLabel:         'ユーザー情報',
   columns:          columnData,
   searchTemplates:  searchTemplateData,
-  fnSearch:         SearchTable,
+  fnSearch:         searchTable,
 };
