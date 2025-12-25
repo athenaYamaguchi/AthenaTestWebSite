@@ -102,7 +102,15 @@ headers.push({
     align: 'start' 
   });
   
-let items: Ref<Item[], Item[]> ;
+const items = ref<Item[]>([])
+// items = ref<Item[]>([
+//           { USER_ID: 'M001', LAST_NAME: 'マスタA',        updatedAt: '2025-12-01' },
+//           { code: 'M002', name: 'マスタB',        updatedAt: '2025-12-05' },
+//           { code: 'T987', name: 'トランザクションX', updatedAt: '2025-12-10' },
+//           { code: 'T988', name: 'トランザクションY', updatedAt: '2025-12-12' },
+//           { code: 'T989', name: 'トランザクションZ', updatedAt: '2025-12-14' },
+//           { code: 'M003', name: 'マスタC',        updatedAt: '2025-12-15' },
+//         ])
 
 // 選択行（return-object に合わせて Row[]）
 const selected = ref<Item[]>([])
@@ -149,19 +157,17 @@ onMounted(
           {},
         ]);
 
-        items = ref<Item[]>(
-          result
-        );
+        items.value = Array.isArray(result) ? result : []
       }
       else {
-        items = ref<Item[]>([
+        items.value = [
           { USER_ID: 'M001', LAST_NAME: 'マスタA',        updatedAt: '2025-12-01' },
           { code: 'M002', name: 'マスタB',        updatedAt: '2025-12-05' },
           { code: 'T987', name: 'トランザクションX', updatedAt: '2025-12-10' },
           { code: 'T988', name: 'トランザクションY', updatedAt: '2025-12-12' },
           { code: 'T989', name: 'トランザクションZ', updatedAt: '2025-12-14' },
           { code: 'M003', name: 'マスタC',        updatedAt: '2025-12-15' },
-        ])
+        ]
       }
     } catch (err) {
       console.error('API 読み込みエラー：', err);
