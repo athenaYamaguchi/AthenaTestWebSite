@@ -102,15 +102,8 @@ headers.push({
     align: 'start' 
   });
   
+// データの格納先を準備
 const items = ref<Item[]>([])
-// items = ref<Item[]>([
-//           { USER_ID: 'M001', LAST_NAME: 'マスタA',        updatedAt: '2025-12-01' },
-//           { code: 'M002', name: 'マスタB',        updatedAt: '2025-12-05' },
-//           { code: 'T987', name: 'トランザクションX', updatedAt: '2025-12-10' },
-//           { code: 'T988', name: 'トランザクションY', updatedAt: '2025-12-12' },
-//           { code: 'T989', name: 'トランザクションZ', updatedAt: '2025-12-14' },
-//           { code: 'M003', name: 'マスタC',        updatedAt: '2025-12-15' },
-//         ])
 
 // 選択行（return-object に合わせて Row[]）
 const selected = ref<Item[]>([])
@@ -118,6 +111,14 @@ const selected = ref<Item[]>([])
 const exeSearch = async (keywords: string[]): Promise<void> => {
   try {
     // 検索処理（略）
+    if (props.commonTableData.fnSearch != null) {
+      const result = await props.commonTableData.fnSearch([
+        {},
+      ]);
+
+      items.value = Array.isArray(result) ? result : []
+      console.log("できたよ")
+    }
   } catch (e) {
     console.error('exeSearch error:', e)
   }
@@ -148,10 +149,14 @@ const createNew = () => {
   // 新規作成処理（ダイアログ・遷移など）
 }
 
-// API 呼び出し
+/**
+ * 表示後処理
+ */
 onMounted(
+  // 非同期処理はsetup内で実施しないようにするため本処理で読み出しを実施
   async () => {
     try {
+      // 関数ポインタが登録されていない場合はテストデータを表示
       if (props.commonTableData.fnSearch != null) {
         const result = await props.commonTableData.fnSearch([
           {},
