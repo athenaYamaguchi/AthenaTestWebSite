@@ -108,7 +108,7 @@ const searchTemplateData: SearchTemplateInfo[] = [
  */
 
 export const searchTable = async (
-  searchWords: any[]
+  searchWords: Record<string, any | null>
 ): Promise<Item[]> => {
   try {
     const payload = {

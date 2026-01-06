@@ -42,7 +42,7 @@ export type CommonTableInfo = {
   tabLabel:         string;                 // タブ表示文字列
   columns:          ColumnInfo[];           // 項目情報
   searchTemplates:  SearchTemplateInfo[];   // 検索テンプレート情報
-  fnSearch?: (searchWords: any[]) 
+  fnSearch?: (searchWords: Record<string, any | null>) 
     => Promise<Item[]>;                     // 検索メソッド
   fnUpdate?: (baseDatas: any[], newDatas: any[]) 
     => Promise<any>;                        // 編集メソッド

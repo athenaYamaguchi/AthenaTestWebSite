@@ -18,7 +18,6 @@
       />
     </v-col>
   </v-row>
-
   
 </template>
 
@@ -53,14 +52,15 @@ const emit = defineEmits<{
  * - タブごとに用意された fnSearch に委譲（存在しない場合は何もしない）
  */
 const exeSearch = async (
-  keywords: string[]
+  keywords: Record<string, any | null>
 ): Promise<void> => {
   try {
     if (props.commonTableData.fnSearch !== undefined) {
-      const result = await props.commonTableData.fnSearch([
-        {},
-      ]);
+      // 未定義ではない
 
+      // コールバック関数を実行
+      const result = await props.commonTableData.fnSearch(keywords);
+      // 結果を反映
       items.value = Array.isArray(result) ? result : []
     }
     console.log("DB成功")

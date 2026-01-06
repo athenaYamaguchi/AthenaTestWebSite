@@ -9,6 +9,7 @@
     >
       <v-col cols="12">
         <v-text-field
+          v-model="inputData[columnData.columnName]"
           :label="columnData.columnTitle"
           variant="outlined"
           density="compact"
@@ -34,7 +35,7 @@
 
 <script setup lang="ts">
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_import_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-import { onMounted} from 'vue'
+import { reactive, onMounted} from 'vue'
 import type {ColumnInfo} from "../../CommonTableType.ts";
 
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_import_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -45,6 +46,7 @@ const props = defineProps<{
 
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_prop_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_Data_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+const inputData = reactive<Record<string, any | null>>({}); // 入力エリア
 
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_Data_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_EventEntry_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -52,7 +54,7 @@ const emit = defineEmits<{
   // 検索ボタンクリック時
   (
     e: 'eventClickSerch', 
-    serchWords: any[],
+    serchWords: Record<string, any | null>,
   ): void
 }>();
 
@@ -68,7 +70,7 @@ const clickSerch = async (
     const serchWords = ["", 2];
 
     // 親へ入力情報を通知
-    emit('eventClickSerch', serchWords);
+    emit('eventClickSerch', inputData);
   } 
   catch (e) {
     // エラー発生
@@ -82,7 +84,12 @@ const clickSerch = async (
  * 初回実行処理
  * 初回のみ実行するメソッドを本メソッドで実行する
  */
-const initMethod = () => {
+const initMethod = () => {  
+  for (const col of props.columnDatas) {
+    if (!(col.columnName in inputData)) {
+      inputData[col.columnName] = '';
+    }
+  }
 
   return;
 }
