@@ -54,11 +54,13 @@ const emit = defineEmits<{
  */
 const exeSearch = async (keywords: string[]): Promise<void> => {
   try {
-    const result = await props.commonTableData.fnSearch([
-      {},
-    ]);
+    if (props.commonTableData.fnSearch !== undefined) {
+      const result = await props.commonTableData.fnSearch([
+        {},
+      ]);
 
-    items.value = Array.isArray(result) ? result : []
+      items.value = Array.isArray(result) ? result : []
+    }
     console.log("DB成功")
     
   } catch (err) {
