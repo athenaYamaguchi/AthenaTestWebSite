@@ -3,8 +3,8 @@
     <!-- 左側（絞り込み） -->
     <v-col cols="2">
       <CommonTableDetailSerchBox 
-        :exeSearch="exeSearch"
         :columnDatas="commonTableData.columns"
+        @eventClickSerch="exeSearch"
       />
     </v-col>
 
@@ -52,7 +52,9 @@ const emit = defineEmits<{
  * - 絞り込みボックスから呼ばれるコールバック
  * - タブごとに用意された fnSearch に委譲（存在しない場合は何もしない）
  */
-const exeSearch = async (keywords: string[]): Promise<void> => {
+const exeSearch = async (
+  keywords: string[]
+): Promise<void> => {
   try {
     if (props.commonTableData.fnSearch !== undefined) {
       const result = await props.commonTableData.fnSearch([
@@ -100,7 +102,7 @@ initMethod();
 onMounted(
   async () => {
     try {
-      exeSearch([""]);
+      // exeSearch([""]);
     } catch (err) {
       console.error('API 読み込みエラー：', err);
     }

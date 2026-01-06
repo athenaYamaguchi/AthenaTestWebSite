@@ -40,8 +40,7 @@ import type {ColumnInfo} from "../../CommonTableType.ts";
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_import_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_prop_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 const props = defineProps<{
-    columnDatas: ColumnInfo[] ,
-    exeSearch: (serchWords: any[]) => Promise<void>,
+    columnDatas: ColumnInfo[]
 }>()
 
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_prop_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -65,13 +64,11 @@ const emit = defineEmits<{
 const clickSerch = async (
 ): Promise<void> => {
   try {
-    // let serchWords: any[];
+    // 暫定
+    const serchWords = ["", 2];
 
-    // // 暫定
-    // serchWords = ["", ""];
-
-    // // 親へ入力情報を通知
-    // emit('eventClickSerch', serchWords);
+    // 親へ入力情報を通知
+    emit('eventClickSerch', serchWords);
   } 
   catch (e) {
     // エラー発生
