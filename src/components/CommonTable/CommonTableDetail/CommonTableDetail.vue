@@ -14,6 +14,7 @@
         :commonTableData  = "commonTableData"
         :columnDatas      = "commonTableData.columns"
         :searchTemplates  = "commonTableData.searchTemplates"
+        :tableItems       = "items"
       />
     </v-col>
   </v-row>
@@ -24,13 +25,25 @@
 <script setup lang="ts">
   import CommonTableDetailSerchBox from "./CommonTableDetailSerchBox/CommonTableDetailSerchBox.vue";
   import CommonTableDetailView from "./CommonTableDetailView/CommonTableDetailView.vue";
-
+  import { ref, onMounted} from 'vue'
   import type {CommonTableInfo} from "../CommonTableType.ts";
+
+  type Item = Record<string, unknown>;          // 表示データ型
+  const items = ref<Item[]>([])                 // 表示データ
 
   // 引数を取得
   const props = defineProps<{ 
     commonTableData: CommonTableInfo 
   }>();
+  
+  if (props.commonTableData.fnSearch != null) {
+    const result = await props.commonTableData.fnSearch([
+      {},
+    ]);
+
+    items.value = Array.isArray(result) ? result : []
+    console.log("できたよ")
+  }
 
   /**
    * 検索実行関数

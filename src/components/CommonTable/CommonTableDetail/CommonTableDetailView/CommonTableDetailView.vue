@@ -21,7 +21,7 @@
     <v-data-table
       class="my-table"
       :headers="headers"
-      :items="items"
+      :items="tableItems"
       item-key="code"
       v-model:selected="selected"
       show-select
@@ -51,7 +51,7 @@
         block 
         class="btn-danger"
         width="40" 
-        @click="deleteSelected"
+        @click="clickDelete"
       >
         削除
       </v-btn>
@@ -62,7 +62,7 @@
         block 
         class="btn-primary"
         width="40" 
-        @click="createNew"
+        @click="clickNewAdd"
       >
         新規追加
       </v-btn>
@@ -77,16 +77,15 @@ import type { DataTableHeader } from 'vuetify'
 import type { CommonTableInfo, ColumnInfo, SearchTemplateInfo } from '../../CommonTableType.ts'
 
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_import_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_prop_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 const props = defineProps<{
   commonTableData:  CommonTableInfo
   columnDatas:      ColumnInfo[]            // 項目情報
   searchTemplates:  SearchTemplateInfo[]    // 検索テンプレート情報
+  tableItems:       Item[]                  // 表示テーブルデータ
 }>()
 
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_prop_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_Data_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 type Item = Record<string, unknown>;          // 表示データ型
 const items = ref<Item[]>([])                 // 表示データ
@@ -94,7 +93,6 @@ const selected = ref<Item[]>([])              // 選択行
 const headers: DataTableHeader<Item>[] = [];  // 表用ヘッダ情報
 
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_Data_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_EventEntry_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 const emit = defineEmits<{
   // テンプレートクリック時
@@ -112,42 +110,46 @@ const emit = defineEmits<{
 
   // 削除ボタンクリック時
   (
-    e: 'clickDelete', 
-    value: string
+    e: 'eventClickDelete', 
+    targetItems: Item[],
   ): void
 
   // 新規追加ボタンクリック時
   (
-    e: 'clickNewAdd', 
-    err: unknown
+    e: 'eventClickNewAdd',
   ): void
 }>();
 
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_EventEntry_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-
-
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_Method_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 /**
  * ヘッダ初期化処理
  */
 const setupHeaders = () => {
-  // カラムの情報からヘッダー情報を作成
-  for (const col of props.columnDatas) {
+  try {
+    // カラムの情報からヘッダー情報を作成
+    for (const col of props.columnDatas) {
+      headers.push({
+        title:      col.columnTitle,  // ColumnInfoの表示名
+        value:      col.columnName,   // Rowのキーに対応
+        sortable:   true,             // 固定でソート有り
+        align:      'start',          
+      });
+    }
+    
+    // 編集ボタンは一律で追加
     headers.push({
-      title:      col.columnTitle,  // ColumnInfoの表示名
-      value:      col.columnName,   // Rowのキーに対応
-      sortable:   true,             // 固定でソート有り
-      align:      'start',          
+      title: '編集',     
+      value: 'actions',   
+      sortable: false, 
+      align: 'start' 
     });
-  }
 
-  // 編集ボタンは一律で追加
-  headers.push({
-    title: '編集',     
-    value: 'actions',   
-    sortable: false, 
-    align: 'start' 
-  });
+  }
+  catch (e) {
+    // エラー発生
+    console.error('setupHeaders error:', e)
+  }
 
   return;
 }
@@ -163,16 +165,18 @@ const clickTemplate = async (
     // emit('eventClickTemplate', { id: keywords, name: 'Alice' }); // サンプル
     emit('eventClickTemplate', searchTemplateInfo);
 
-    // 検索処理（略）
-    if (props.commonTableData.fnSearch != null) {
-      const result = await props.commonTableData.fnSearch([
-        {},
-      ]);
+    // // 検索処理（略）
+    // if (props.commonTableData.fnSearch != null) {
+    //   const result = await props.commonTableData.fnSearch([
+    //     {},
+    //   ]);
 
-      items.value = Array.isArray(result) ? result : []
-      console.log("できたよ")
-    }
-  } catch (e) {
+    //   items.value = Array.isArray(result) ? result : []
+    //   console.log("できたよ")
+    // }
+  } 
+  catch (e) {
+    // エラー発生
     console.error('exeSearch error:', e)
   }
 }
@@ -182,29 +186,65 @@ const clickTemplate = async (
  * @param item 
  */
 const clickEdit = (item: Item) => {
-  emit('eventClickEdit', item);
+  try {
+    // 対象の行のデータを親に通知する
+    emit('eventClickEdit', item);
+
+  }
+  catch (e) {
+    // エラー発生
+    console.error('clickEdit error:', e)
+  }
 
   return;
 }
 
-// 選択行の削除
-const deleteSelected = () => {
-  if (selected.value.length === 0) return
-  const selectedCodes = new Set(selected.value.map(r => r.code))
-  // for (let i = items.value.length - 1; i >= 0; i--) {
-  //   if (selectedCodes.has(items.value[i].code)) {
-  //     items.value.splice(i, 1)
-  //   }
-  // }
-  // selected.value = []
+/**
+ * 削除ボタンクリック時実行処理
+ */
+const clickDelete = () => {
+  try {
+    // 選択された行が0である場合は警告を表示するため判定
+    if (selected.value.length === 0) {
+      // 選択対象行が0
+
+      // 警告を表示する
+
+    }
+    else {
+      // 選択対象行が1以上
+
+      // 選択された行を親に通知する
+      emit('eventClickDelete', selected.value);
+    }
+
+  }
+  catch (e) {
+    // エラー発生
+    console.error('clickDelete error:', e)
+  }
+
+  return;
 }
 
-const createNew = () => {
-  // 新規作成処理（ダイアログ・遷移など）
+/**
+ * 新規追加ボタンクリック時実行処理
+ */
+const clickNewAdd = () => {
+  try {
+    // 親に通知する
+    emit('eventClickNewAdd');
+
+  }
+  catch (e) {
+    // エラー発生
+    console.error('clickNewAdd error:', e)
+  }
+
+  return;
 }
 
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_Method_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_InitMethod_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 /**
  * 初回実行処理
@@ -220,7 +260,6 @@ const initMethod = () => {
 initMethod();
 
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_InitMethod_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_EventMethod_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 /**
  * 表示後処理
@@ -314,4 +353,3 @@ onMounted(
   opacity: 0.7 !important; /* 無効感を出す */
 }
 </style>
-``
