@@ -3,16 +3,16 @@
   <v-row style="margin-bottom: 6px;">
     <v-col
       cols="2"
-      v-for="(columnData, index) in searchTemplates"
-      :key="columnData.templateLabel"
+      v-for="(searchTemplate, index) in searchTemplates"
+      :key="searchTemplate.templateLabel"
     >
       <v-btn 
         block 
         class="btn-primary" 
         width="100" 
-        @click="exeSearch([])"
+        @click="clickTemplate(searchTemplate)"
       >
-        {{ columnData.templateLabel }}
+        {{ searchTemplate.templateLabel }}
       </v-btn>
     </v-col>
   </v-row>
@@ -37,7 +37,7 @@
           size="small"
           class="btn-edit"
           variant="outlined"
-          @click="editRow(item)"
+          @click="clickEdit(item)"
         >
           編集
         </v-btn>
@@ -71,45 +71,114 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, type Ref } from 'vue'
+
+// #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_import_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+import { ref, onMounted} from 'vue'
 import type { DataTableHeader } from 'vuetify'
 import type { CommonTableInfo, ColumnInfo, SearchTemplateInfo } from '../../CommonTableType.ts'
 
-// 引数を取得
+// #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_import_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+// #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_prop_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 const props = defineProps<{
   commonTableData:  CommonTableInfo
   columnDatas:      ColumnInfo[]            // 項目情報
-  searchTemplates:  SearchTemplateInfo[]// 検索テンプレート情報
+  searchTemplates:  SearchTemplateInfo[]    // 検索テンプレート情報
 }>()
 
-type Item = Record<string, unknown>;
+// #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_prop_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
-// カラムの情報からヘッダー情報を作成
-let headers: DataTableHeader<Item>[] = [];
-for (const col of props.columnDatas) {
-  headers.push({
-    title:      col.columnTitle,  // ColumnInfoの表示名
-    value:      col.columnName,   // Rowのキーに対応
-    sortable:   true,             // 固定でソート有り
-    align:      'start',          
-  });
+// #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_Data_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+type Item = Record<string, unknown>;          // 表示データ型
+const items = ref<Item[]>([])                 // 表示データ
+const selected = ref<Item[]>([])              // 選択行
+const headers: DataTableHeader<Item>[] = [];  // 表用ヘッダ情報
+
+// #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_Data_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+// #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_EventEntry_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+const emit = defineEmits<{
+  // テンプレートクリック時
+  (
+    e: 'eventClickTemplate', 
+    // payload: { id: number; name: string } サンプル
+    searchTemplateInfo: SearchTemplateInfo,
+  ): void
+
+  // 編集ボタンクリック時
+  (
+    e: 'eventClickEdit',
+    targetItem: Item,
+  ): void
+
+  // 削除ボタンクリック時
+  (
+    e: 'clickDelete', 
+    value: string
+  ): void
+
+  // 新規追加ボタンクリック時
+  (
+    e: 'clickNewAdd', 
+    err: unknown
+  ): void
+}>();
+
+// #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_EventEntry_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+// #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_InitMethod_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+/**
+ * 初回実行処理
+ * 初回のみ実行するメソッドを本メソッドで実行する
+ */
+const initMethod = () => {
+  setupHeaders(); // ヘッダ初期化処理
+
+  return;
 }
-// 編集ボタンは一律で追加
-headers.push({
+
+// 初回処理を実施
+initMethod();
+
+// #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_InitMethod_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+// #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_Method_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+/**
+ * ヘッダ初期化処理
+ */
+const setupHeaders = () => {
+  // カラムの情報からヘッダー情報を作成
+  for (const col of props.columnDatas) {
+    headers.push({
+      title:      col.columnTitle,  // ColumnInfoの表示名
+      value:      col.columnName,   // Rowのキーに対応
+      sortable:   true,             // 固定でソート有り
+      align:      'start',          
+    });
+  }
+
+  // 編集ボタンは一律で追加
+  headers.push({
     title: '編集',     
     value: 'actions',   
     sortable: false, 
     align: 'start' 
   });
-  
-// データの格納先を準備
-const items = ref<Item[]>([])
 
-// 選択行（return-object に合わせて Row[]）
-const selected = ref<Item[]>([])
+  return;
+}
 
-const exeSearch = async (keywords: string[]): Promise<void> => {
+/**
+ * テンプレートボタンクリック時実行処理
+ * @param keywords 
+ */
+const clickTemplate = async (
+  searchTemplateInfo: SearchTemplateInfo
+): Promise<void> => {
   try {
+    // emit('eventClickTemplate', { id: keywords, name: 'Alice' }); // サンプル
+    emit('eventClickTemplate', searchTemplateInfo);
+
     // 検索処理（略）
     if (props.commonTableData.fnSearch != null) {
       const result = await props.commonTableData.fnSearch([
@@ -124,13 +193,14 @@ const exeSearch = async (keywords: string[]): Promise<void> => {
   }
 }
 
-// 行「編集」クリック時
-const editRow = (row: Item) => {
-  // ここでダイアログ表示や画面遷移などを行う
-  // 例：コンソールに出す（差し替えてください）
-  console.log('edit row:', row)
-  // 例：ルーター遷移するなら（クエリで code を渡す）
-  // router.push({ name: 'edit-page', query: { code: row.code } })
+/**
+ * 編集ボタンクリック時実行処理
+ * @param item 
+ */
+const clickEdit = (item: Item) => {
+  emit('eventClickEdit', item);
+
+  return;
 }
 
 // 選択行の削除
@@ -149,6 +219,9 @@ const createNew = () => {
   // 新規作成処理（ダイアログ・遷移など）
 }
 
+// #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_Method_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+// #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_EventMethod_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 /**
  * 表示後処理
  */
@@ -180,6 +253,7 @@ onMounted(
   }
 );
 
+// #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_EventMethod_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 </script>
 
 <style scoped>
