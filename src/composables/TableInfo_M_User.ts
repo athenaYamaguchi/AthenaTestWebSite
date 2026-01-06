@@ -104,7 +104,14 @@ export const searchTable = async (
     });
 
     if (!res.ok) {
-      throw new Error(`API error: ${res.status} ${res.body}`);
+      // まずはテキストを読みに行く（APIがtextを返す場合に備える）
+      const errText = await res.text().catch(() => "");
+      // JSONの可能性がある場合はパースを試みる
+      let errJson: any = null;
+      try { errJson = JSON.parse(errText); } catch {}
+
+      const detail = errJson ?? errText ?? `(no body)`;
+      throw new Error(`API error: ${res.status} ${detail}`);
     }
 
     const ansJson = await res.json();
