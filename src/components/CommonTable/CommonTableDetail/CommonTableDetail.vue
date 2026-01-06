@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <!-- 左側（絞り込み） -->
-    <v-col cols="2">
+    <v-col cols="3">
       <CommonTableDetailSerchBox 
         :columnDatas="commonTableData.columns"
         @eventClickSerch="exeSearch"
@@ -9,7 +9,7 @@
     </v-col>
 
     <!-- 右側（テーブルビュー） -->
-    <v-col cols="10">
+    <v-col cols="9">
       <CommonTableDetailView 
         :commonTableData  = "commonTableData"
         :columnDatas      = "commonTableData.columns"

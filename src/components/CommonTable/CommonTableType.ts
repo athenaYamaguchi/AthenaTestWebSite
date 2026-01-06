@@ -16,8 +16,8 @@ export type ColumnInfo = {
   columnName:     string;           // 項目名
   columnType:     number;           // 項目種別
   viewFlg:        boolean;          // 項目表示フラグ
-  selectOptions:  any[];            // 選択肢
   isBulkEditable: boolean;          // 一括編集可能フラグ
+  selectOptions?: any[];            // 選択肢 (項目種別によっては不要)
 };
 
 /**
