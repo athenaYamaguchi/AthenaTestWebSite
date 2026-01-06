@@ -23,60 +23,89 @@
 </template>
 
 <script setup lang="ts">
-  import CommonTableDetailSerchBox from "./CommonTableDetailSerchBox/CommonTableDetailSerchBox.vue";
-  import CommonTableDetailView from "./CommonTableDetailView/CommonTableDetailView.vue";
-  import { ref, onMounted} from 'vue'
-  import type {CommonTableInfo} from "../CommonTableType.ts";
+// #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_import_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+import CommonTableDetailSerchBox from "./CommonTableDetailSerchBox/CommonTableDetailSerchBox.vue";
+import CommonTableDetailView from "./CommonTableDetailView/CommonTableDetailView.vue";
+import { ref, onMounted} from 'vue'
+import type {CommonTableInfo} from "../CommonTableType.ts";
 
-  type Item = Record<string, unknown>;          // 表示データ型
-  const items = ref<Item[]>([])                 // 表示データ
+// #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_import_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+// #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_prop_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+const props = defineProps<{ 
+  commonTableData: CommonTableInfo 
+}>();
 
-  // 引数を取得
-  const props = defineProps<{ 
-    commonTableData: CommonTableInfo 
-  }>();
+// #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_prop_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+// #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_Data_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+type Item = Record<string, unknown>;          // 表示データ型
+const items = ref<Item[]>([])                 // 表示データ
 
-  if (props.commonTableData.fnSearch != null) {
+// #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_Data_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+// #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_EventEntry_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+const emit = defineEmits<{
+}>();
+
+// #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_EventEntry_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+// #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_Method_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+/**
+ * 検索実行関数
+ * - 絞り込みボックスから呼ばれるコールバック
+ * - タブごとに用意された fnSearch に委譲（存在しない場合は何もしない）
+ */
+const exeSearch = async (keywords: string[]): Promise<void> => {
+  try {
     const result = await props.commonTableData.fnSearch([
       {},
     ]);
 
     items.value = Array.isArray(result) ? result : []
-    console.log("できたよ")
-
-    // items.value = [
-    //   { USER_ID: 'M001', LAST_NAME: 'マスタA',        updatedAt: '2025-12-01' },
-    //   { code: 'M002', name: 'マスタB',        updatedAt: '2025-12-05' },
-    //   { code: 'T987', name: 'トランザクションX', updatedAt: '2025-12-10' },
-    //   { code: 'T988', name: 'トランザクションY', updatedAt: '2025-12-12' },
-    //   { code: 'T989', name: 'トランザクションZ', updatedAt: '2025-12-14' },
-    //   { code: 'M003', name: 'マスタC',        updatedAt: '2025-12-15' },
-    // ]
+    console.log("DB成功")
+    
+  } catch (err) {
+    items.value = [
+      { USER_ID: 'M001', LAST_NAME: 'マスタA',        updatedAt: '2025-12-01' },
+      { code: 'M002', name: 'マスタB',        updatedAt: '2025-12-05' },
+      { code: 'T987', name: 'トランザクションX', updatedAt: '2025-12-10' },
+      { code: 'T988', name: 'トランザクションY', updatedAt: '2025-12-12' },
+      { code: 'T989', name: 'トランザクションZ', updatedAt: '2025-12-14' },
+      { code: 'M003', name: 'マスタC',        updatedAt: '2025-12-15' },
+    ]
+    console.error("exeSearch error:", err);
+    console.log("DB失敗")
+    // 必要ならユーザー通知（Snackbarなど）/ エラーハンドリング
   }
+};
 
-  /**
-   * 検索実行関数
-   * - 絞り込みボックスから呼ばれるコールバック
-   * - タブごとに用意された fnSearch に委譲（存在しない場合は何もしない）
-   */
-  const exeSearch = async (keywords: string[]): Promise<void> => {
+// #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_Method_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+// #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_InitMethod_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+/**
+ * 初回実行処理
+ * 初回のみ実行するメソッドを本メソッドで実行する
+ */
+const initMethod = () => {
+
+  return;
+}
+
+// 初回処理を実施
+initMethod();
+
+// #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_InitMethod_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+// #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_EventMethod_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+/**
+ * 表示後処理
+ */
+onMounted(
+  async () => {
     try {
-      if (typeof props.commonTableData.fnSearch === "function") {
-        const result = await props.commonTableData.fnSearch(keywords);
-        // 必要ならここで結果を store / emit / ローカル state に反映
-        // 例）emit で親へ渡す:
-        // emit('searched', { key: props.CommonTableData.key, result });
-      } else {
-        // フォールバック：検索関数が未設定の場合
-        console.warn("fnSearch is not provided for:", props.commonTableData.key, keywords);
-      }
-    } catch (e) {
-      console.error("exeSearch error:", e);
-      // 必要ならユーザー通知（Snackbarなど）/ エラーハンドリング
+      exeSearch([""]);
+    } catch (err) {
+      console.error('API 読み込みエラー：', err);
     }
-  };
+  }
+);
 
-
+// #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_EventMethod_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 </script>
 
 <style scoped>
