@@ -65,13 +65,13 @@ const emit = defineEmits<{
 const clickSerch = async (
 ): Promise<void> => {
   try {
-    let serchWords: any[];
-    
-    // 暫定
-    serchWords = ["", ""];
+    // let serchWords: any[];
 
-    // 親へ入力情報を通知
-    emit('eventClickSerch', serchWords);
+    // // 暫定
+    // serchWords = ["", ""];
+
+    // // 親へ入力情報を通知
+    // emit('eventClickSerch', serchWords);
   } 
   catch (e) {
     // エラー発生
