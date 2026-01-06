@@ -104,7 +104,7 @@ export const searchTable = async (
     });
 
     if (!res.ok) {
-      throw new Error(`API error: ${res.status}`);
+      throw new Error(`API error: ${res.status} ${res.body}`);
     }
 
     const ansJson = await res.json();
