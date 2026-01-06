@@ -24,7 +24,7 @@ import { ref, onMounted } from 'vue';
 import CommonHeader from '../components/CommonHeader.vue';
 import CommonTable from '../components/CommonTable/CommonTable.vue';
 
-import type { CommonTableInfo, SearchTemplateInfo, ColumnInfo } from '../components/CommonTable/CommonTableType';
+import type { CommonTableInfo, SearchTemplateInfo, ColumnInfo } from '../composables/CommonTableType';
 
 // headerTitle
 const headerTitle = ref("トップページ");

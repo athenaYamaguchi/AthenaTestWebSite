@@ -88,8 +88,8 @@
 <script setup lang="ts">
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_import_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 import { reactive, onMounted} from 'vue'
-import type {ColumnInfo} from "../../CommonTableType.ts";
-import { COLTYPE} from '../../../CommonTable/CommonTableType';
+import type {ColumnInfo} from "../../../../composables/CommonTableType.ts";
+import { COLTYPE} from '../../../../composables/CommonTableType.ts';
 
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_import_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_prop_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/

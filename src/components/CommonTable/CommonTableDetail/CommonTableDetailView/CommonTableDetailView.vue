@@ -74,7 +74,7 @@
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_import_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 import { ref, onMounted} from 'vue'
 import type { DataTableHeader } from 'vuetify'
-import type { CommonTableInfo, ColumnInfo, SearchTemplateInfo } from '../../CommonTableType.ts'
+import type { CommonTableInfo, ColumnInfo, SearchTemplateInfo } from '../../../../composables/CommonTableType.ts'
 
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_import_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_prop_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/

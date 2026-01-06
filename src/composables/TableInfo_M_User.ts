@@ -1,8 +1,8 @@
 /**
  * テーブル情報 マスタ ユーザー情報
  */
-import type { CommonTableInfo, SearchTemplateInfo, ColumnInfo} from '../components/CommonTable/CommonTableType';
-import { COLTYPE} from '../components/CommonTable/CommonTableType';
+import type { CommonTableInfo, SearchTemplateInfo, ColumnInfo} from './CommonTableType.ts';
+import { COLTYPE} from './CommonTableType';
 
 // テーブル用の型
 type Item = Record<string, unknown>;
@@ -96,7 +96,7 @@ export const searchTable = async (
       userName: "山口",
       searchWords: searchWords,
     };
-    
+
     const res = await fetch('https://b22-function.azurewebsites.net/api/getM_Users', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

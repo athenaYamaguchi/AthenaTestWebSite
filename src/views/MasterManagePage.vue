@@ -16,7 +16,7 @@ import CommonHeader from '../components/CommonHeader.vue';
 import CommonTable from '../components/CommonTable/CommonTable.vue';
 import {tableInfoMUser} from '../composables/TableInfo_M_User.ts';
 
-import type { CommonTableInfo, SearchTemplateInfo, ColumnInfo } from '../components/CommonTable/CommonTableType.ts';
+import type { CommonTableInfo, SearchTemplateInfo, ColumnInfo } from '../composables/CommonTableType.ts';
 
 // ヘッダタイトル
 const headerTitle = ref("マスタ管理");

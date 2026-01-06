@@ -26,7 +26,7 @@
 import CommonTableDetailSerchBox from "./CommonTableDetailSerchBox/CommonTableDetailSerchBox.vue";
 import CommonTableDetailView from "./CommonTableDetailView/CommonTableDetailView.vue";
 import { ref, onMounted} from 'vue'
-import type {CommonTableInfo} from "../CommonTableType.ts";
+import type {CommonTableInfo} from "../../../composables/CommonTableType.ts";
 
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_import_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_prop_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/

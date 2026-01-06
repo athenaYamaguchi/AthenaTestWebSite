@@ -33,7 +33,7 @@
   import { ref, markRaw } from "vue";
   import CommonTableDetail from "./CommonTableDetail/CommonTableDetail.vue";
 
-  import type {CommonTableInfo} from "./CommonTableType.ts";
+  import type {CommonTableInfo} from "../../composables/CommonTableType.ts";
   
   const props = defineProps<{ CommonTableData: CommonTableInfo[] }>();
 
