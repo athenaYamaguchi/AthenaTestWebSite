@@ -125,7 +125,7 @@ onMounted(
   // async () => {
   //   try {
   //     // 以下コメント解除して実際の API 呼び出しに利用
-  //     const res = await fetch(`https://b22-function.azurewebsites.net/api/HttpTrigger2`);
+  //     const res = await fetch(`${import.meta.env.VITE_AZURE_FUNC_URL}HttpTrigger`);
   //     if (!res.ok) {
   //       viewData.value = `API エラー（ステータス: ${res.status}）`;
   //       throw new Error("API error");
@@ -143,7 +143,7 @@ onMounted(
         options: { mode: 'fast', retry: 1 }
       };
 
-      const res = await fetch('https://b22-function.azurewebsites.net/api/getM_Users', {
+      const res = await fetch(`${import.meta.env.VITE_AZURE_FUNC_URL}getM_Users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
