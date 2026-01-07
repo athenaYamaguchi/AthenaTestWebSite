@@ -122,20 +122,6 @@ const viewData = ref<unknown>(null);
 
 // API 呼び出し
 onMounted(
-  // async () => {
-  //   try {
-  //     // 以下コメント解除して実際の API 呼び出しに利用
-  //     const res = await fetch(`${import.meta.env.VITE_AZURE_FUNC_URL}HttpTrigger`);
-  //     if (!res.ok) {
-  //       viewData.value = `API エラー（ステータス: ${res.status}）`;
-  //       throw new Error("API error");
-  //     }
-  //     const json = await res.json();
-  //     viewData.value = json;
-  //   } catch (err) {
-  //     console.error("API 読み込みエラー：", err);
-  //   }
-  // }
   async () => {
     try {
       const payload = {
