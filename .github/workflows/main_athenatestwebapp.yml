@@ -64,7 +64,5 @@ jobs:
           app-name: 'AthenaTestWebApp'
           slot-name: 'Production'
           package: .
-        env:
-          VITE_AZURE_FUNC_URL: ${{ secrets.VITE_AZURE_FUNC_URL }}
 
           
