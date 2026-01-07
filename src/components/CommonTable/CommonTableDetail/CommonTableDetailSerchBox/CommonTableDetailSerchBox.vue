@@ -119,6 +119,18 @@ const emit = defineEmits<{
 const clickSerch = async (
 ): Promise<void> => {
   try {
+    // 日付の情報を整形する (日付データ = STA + END)
+    for (const columnData of props.columnDatas) {
+      // 日付データである場合は「STA_XXXX」と「END_XXXX」が存在するため結合する
+      if (columnData.columnType === COLTYPE.DATE) {
+        // 日付データ
+
+        // 開始と終了を結合したデータをセット
+        inputData[columnData.columnName] = 
+          inputData['STA_' + columnData.columnName] + "," + inputData['END_' + columnData.columnName];
+      }
+    }
+
     // 親へ入力情報を通知
     emit('eventClickSerch', inputData);
   } 

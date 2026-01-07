@@ -97,7 +97,8 @@ export const searchTable = async (
       searchWords: searchWords,
     };
 
-    const res = await fetch('https://b22-function.azurewebsites.net/api/getM_Users', {
+    const res = await fetch(`${import.meta.env.process.VITE_AZURE_FUNC_URL}getM_Users`, {
+    // const res = await fetch('/api/getM_Users', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
