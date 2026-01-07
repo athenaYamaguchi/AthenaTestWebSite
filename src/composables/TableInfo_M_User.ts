@@ -96,8 +96,7 @@ export const searchTable = async (
       userName: "山口",
       searchWords: searchWords,
     };
-
-    const targetURL = import.meta.env.VITE_AZURE_FUNC_URL;
+    
     const res = await fetch(`${import.meta.env.VITE_AZURE_FUNC_URL}getM_Users`, {
     // const res = await fetch('/api/getM_Users', {
       method: 'POST',
