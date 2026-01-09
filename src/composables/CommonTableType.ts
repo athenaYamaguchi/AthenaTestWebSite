@@ -24,8 +24,8 @@ export type ColumnInfo = {
  * 検索テンプレート情報
  */
 export type SearchTemplateInfo = {
-  templateLabel:  string;           // テンプレートラベル
-  searchWords:    any[];            // 検索情報
+  templateLabel:  string;                     // テンプレートラベル
+  searchWords:    Record<string, any | null>; // 検索情報
 };
 
 /**

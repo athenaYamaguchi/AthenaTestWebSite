@@ -55,6 +55,7 @@
           variant="outlined"
           density="compact"
           hide-details="auto"
+          @update:model-value="onDateClearSta(columnData.columnName, $event)"
         ></v-text-field>
       </v-col>
 
@@ -67,6 +68,7 @@
           variant="outlined"
           density="compact"
           hide-details="auto"
+          @update:model-value="onDateClearEnd(columnData.columnName, $event)"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -88,18 +90,18 @@
 <script setup lang="ts">
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_import_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 import { reactive, onMounted} from 'vue'
-import type {ColumnInfo} from "../../../../composables/CommonTableType.ts";
-import { COLTYPE} from '../../../../composables/CommonTableType.ts';
+import type {ColumnInfo} from "../../composables/CommonTableType.ts";
+import { COLTYPE} from '../../composables/CommonTableType.ts';
 
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_import_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_prop_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 const props = defineProps<{
-    columnDatas: ColumnInfo[]
+    columnDatas:  ColumnInfo[]
+    inputData:    Record<string, any | null> // 入力エリア
 }>()
 
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_prop_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_Data_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-const inputData = reactive<Record<string, any | null>>({}); // 入力エリア
 
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_Data_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_EventEntry_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -119,26 +121,76 @@ const emit = defineEmits<{
 const clickSerch = async (
 ): Promise<void> => {
   try {
+    // 検索文字列に異常があった場合は検索しない
+    let errFlg = false;
+
     // 日付の情報を整形する (日付データ = STA + END)
     for (const columnData of props.columnDatas) {
       // 日付データである場合は「STA_XXXX」と「END_XXXX」が存在するため結合する
       if (columnData.columnType === COLTYPE.DATE) {
         // 日付データ
 
-        // 開始と終了を結合したデータをセット
-        inputData[columnData.columnName] = 
-          inputData['STA_' + columnData.columnName] + "," + inputData['END_' + columnData.columnName];
+        // 日付データに異常がないかチェック(以下をチェック)
+        // ・空白
+        // ・開始日付 > 終了日付
+        if ((props.inputData['STA_' + columnData.columnName] == "") || 
+            (props.inputData['END_' + columnData.columnName] == "")){
+          // どちらかが空白
+          errFlg = true;
+          break;
+        }
+        else if (props.inputData['STA_' + columnData.columnName] > 
+                 props.inputData['END_' + columnData.columnName]) {
+          // 開始日付 > 終了日付
+          errFlg = true;
+          break;
+        }
+        else {
+          // 開始と終了を結合したデータをセット
+          props.inputData[columnData.columnName] = 
+            props.inputData['STA_' + columnData.columnName] + "," + props.inputData['END_' + columnData.columnName];
+        }
       }
     }
 
-    // 親へ入力情報を通知
-    emit('eventClickSerch', inputData);
+    if (false === errFlg) {
+      // エラー未発生
+
+      // 親へ入力情報を通知
+      emit('eventClickSerch', props.inputData);
+    }
   } 
   catch (e) {
     // エラー発生
     console.error('clickSerch error:', e)
   }
 }
+
+const onDateClearSta = (
+  colName:string,
+  val: string
+) => {
+  // クリアされた場合は最小値に設定する
+  if (val == "") {
+    // クリアされた
+    props.inputData["STA_" + colName] = '0001-01-01';
+  }
+
+  return;
+};
+
+const onDateClearEnd = (
+  colName:string,
+  val: string
+) => {
+  // クリアされた場合は最大値に設定する
+  if (val == "") {
+    // クリアされた
+    props.inputData["END_" + colName] = '9999-12-31';
+  }
+
+  return;
+};
 
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_Method_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_InitMethod_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -150,7 +202,7 @@ const initMethod = () => {
   // 項目情報の数分だけ検索項目のエリアを準備する
   for (const col of props.columnDatas) {
     // まだ登録していない場合は追加するため判定
-    if (!(col.columnName in inputData)) {
+    if (!(col.columnName in props.inputData)) {
       // まだ登録していない
 
       // 種別によって初期値を変更する
@@ -158,12 +210,12 @@ const initMethod = () => {
         // 日付
 
         // 開始と終了を用意し、初期値をそれぞれ最小と最大をセットする
-        inputData['STA_' + col.columnName] = "0001-01-01";
-        inputData['END_' + col.columnName] = "9999-12-31";
+        props.inputData['STA_' + col.columnName] = "0001-01-01";
+        props.inputData['END_' + col.columnName] = "9999-12-31";
       }
       else {
         // その他 (nullをセット)
-        inputData[col.columnName] = null;
+        props.inputData[col.columnName] = null;
       }
     }
   }

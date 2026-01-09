@@ -72,15 +72,39 @@ const columnData: ColumnInfo[] = [
 const searchTemplateData: SearchTemplateInfo[] = [
   {
     templateLabel:  "テンプレート1",
-    searchWords:    ["aaaa", "bbbb", "cccc"],
+    searchWords:    {
+      [COL_USER_ID.columnName]:"t-yamaguchi", 
+      [COL_LAST_NAME.columnName]:"山口", 
+      [COL_FIRST_NAME.columnName]:"達也", 
+      [COL_LAST_NAME_KANA.columnName]:"yamaguchi", 
+      [COL_FIRST_NAME_KANA.columnName]:"tatsuya", 
+      [COL_START_DATE.columnName]:"1994-01-01,9999-12-31", 
+      [COL_END_DATE.columnName]:"9999-12-31,9999-12-31", 
+    },
   },
   {
     templateLabel:  "テンプレート2",
-    searchWords:    ["dddd", "eeee", "ffff"],
+    searchWords:    {
+      [COL_USER_ID.columnName]:"t-hirose", 
+      [COL_LAST_NAME.columnName]:"", 
+      [COL_FIRST_NAME.columnName]:"", 
+      [COL_LAST_NAME_KANA.columnName]:"", 
+      [COL_FIRST_NAME_KANA.columnName]:"", 
+      [COL_START_DATE.columnName]:"", 
+      [COL_END_DATE.columnName]:"", 
+    },
   },
   {
     templateLabel:  "テンプレート3",
-    searchWords:    ["gggg", "hhhh", "ffff"],
+    searchWords:    {
+      [COL_USER_ID.columnName]:"t-yamaguchi", 
+      [COL_LAST_NAME.columnName]:"山口", 
+      [COL_FIRST_NAME.columnName]:"達也", 
+      [COL_LAST_NAME_KANA.columnName]:"yamaguchi", 
+      [COL_FIRST_NAME_KANA.columnName]:"tatsuya", 
+      [COL_START_DATE.columnName]:"1994-01-01,9999-12-31", 
+      [COL_END_DATE.columnName]:"9999-12-31,9999-12-31", 
+    },
   },
 ]
 
@@ -97,10 +121,8 @@ export const searchTable = async (
       searchWords: searchWords,
     };
     
-    console.log("import.meta.env", import.meta.env);
-    console.log("VITE_AZURE_FUNC_URL", import.meta.env.VITE_AZURE_FUNC_URL);
+    // envからパスを取得し、サーバーへ問い合わせる
     const res = await fetch(`${import.meta.env.VITE_AZURE_FUNC_URL}getM_Users`, {
-    // const res = await fetch('/api/getM_Users', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -110,13 +132,12 @@ export const searchTable = async (
       const text = await res.text().catch(() => "");
       let detail: any = text;
       try { detail = JSON.parse(text); } catch {}
-      const msg = typeof detail === "string" ? detail : detail?.message ?? "";
-      throw new Error(`API error: ${res.status} ${msg}`);
-
+      // const msg = typeof detail === "string" ? detail : detail?.message ?? "";
+      // throw new Error(`API error: ${res.status} ${msg}`);
+      return [];
     }
 
     const ansJson = await res.json();
-    console.log(ansJson);
 
     // 防御的チェック：items が配列か
     const rows: any[] = Array.isArray(ansJson?.items) ? ansJson.items : [];
@@ -133,14 +154,55 @@ export const searchTable = async (
       )
     );
 
+    // 日付データは文字列に変換する
+    for (const item of items) {
+      const staDate = item[COL_START_DATE.columnName];
+      const endDate = item[COL_END_DATE.columnName];
+
+      item[COL_START_DATE.columnName] = toDateTextJa(staDate);
+      item[COL_END_DATE.columnName]   = toDateTextJa(endDate);
+
+    }
+
     return items;
 
   } catch (e) {
     console.error('fnSearch error:', e);
-    throw e;
+    // throw e;
     return []; // 失敗時は空配列が扱いやすい
   }
 };
+
+
+// ヘルパー：任意の入力（日付文字列、Date、UNIX秒/ミリ秒）を「YYYY/MM/DD」に
+function toDateTextJa(value: string | number | Date | null | undefined | unknown): string {
+  if (value == null || value === '') return '';
+
+  // 型ごとの正規化
+  let d: Date;
+  if (value instanceof Date) {
+    d = value;
+  } else if (typeof value === 'string') {
+    // 文字列（ISOなど）→ Date
+    d = new Date(value);
+  } else if (typeof value === 'number') {
+    // 数値：UNIX「秒」の可能性があるため、桁で判定
+    d = value > 1e12 ? new Date(value) : new Date(value * 1000);
+  } else {
+    return '';
+  }
+
+  if (isNaN(d.getTime())) return '';
+
+  // 日本の表記で「年月日」だけ
+  return new Intl.DateTimeFormat('ja-JP', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    // 必要なら timeZone を固定: timeZone: 'Asia/Tokyo'
+  }).format(d);
+}
+
 
 export const tableInfoMUser: CommonTableInfo = { 
   key:              'one', 

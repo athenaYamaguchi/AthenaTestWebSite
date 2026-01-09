@@ -74,7 +74,7 @@
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_import_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 import { ref, onMounted} from 'vue'
 import type { DataTableHeader } from 'vuetify'
-import type { CommonTableInfo, ColumnInfo, SearchTemplateInfo } from '../../../../composables/CommonTableType.ts'
+import type { CommonTableInfo, ColumnInfo, SearchTemplateInfo } from '../../composables/CommonTableType.ts'
 
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_import_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_prop_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -156,7 +156,7 @@ const setupHeaders = () => {
 
 /**
  * テンプレートボタンクリック時実行処理
- * @param keywords 
+ * @param searchTemplateInfo 
  */
 const clickTemplate = async (
   searchTemplateInfo: SearchTemplateInfo
@@ -243,6 +243,23 @@ const clickNewAdd = () => {
 
   return;
 }
+
+
+function formatDate(value: string | number | Date) {
+  const d =
+    typeof value === 'string' ? new Date(value) :
+    typeof value === 'number' ? new Date(value * 1000) : // UNIX秒
+    value;
+
+  // 日本のタイムゾーンで「年月日」のみ
+  return new Intl.DateTimeFormat('ja-JP', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    // timeZone を固定したい場合: timeZone: 'Asia/Tokyo'
+  }).format(d);
+}
+
 
 // #endregion _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/END_Method_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 // #region    _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/STA_InitMethod_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/

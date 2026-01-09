@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
   import { ref, markRaw } from "vue";
-  import CommonTableDetail from "./CommonTableDetail/CommonTableDetail.vue";
+  import CommonTableDetail from "./CommonTableDetail.vue";
 
   import type {CommonTableInfo} from "../../composables/CommonTableType.ts";
   
