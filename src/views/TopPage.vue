@@ -139,6 +139,8 @@ async function loadUser() {
   const res = await fetch('/.auth/me', { credentials: 'include' });
   const payload = await res.json(); // { clientPrincipal } or { clientPrincipal: null }
   user.value = payload?.clientPrincipal ?? null;
+  console.log(payload)
+  console.log(user.value)
 }
 
 // API 呼び出し
