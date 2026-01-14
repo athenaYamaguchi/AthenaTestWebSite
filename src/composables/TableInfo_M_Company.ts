@@ -152,40 +152,9 @@ export const searchTable = async (
   }
 };
 
-
-// ヘルパー：任意の入力（日付文字列、Date、UNIX秒/ミリ秒）を「YYYY/MM/DD」に
-function toDateTextJa(value: string | number | Date | null | undefined | unknown): string {
-  if (value == null || value === '') return '';
-
-  // 型ごとの正規化
-  let d: Date;
-  if (value instanceof Date) {
-    d = value;
-  } else if (typeof value === 'string') {
-    // 文字列（ISOなど）→ Date
-    d = new Date(value);
-  } else if (typeof value === 'number') {
-    // 数値：UNIX「秒」の可能性があるため、桁で判定
-    d = value > 1e12 ? new Date(value) : new Date(value * 1000);
-  } else {
-    return '';
-  }
-
-  if (isNaN(d.getTime())) return '';
-
-  // 日本の表記で「年月日」だけ
-  return new Intl.DateTimeFormat('ja-JP', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    // 必要なら timeZone を固定: timeZone: 'Asia/Tokyo'
-  }).format(d);
-}
-
-
 export const tableInfoMUser: CommonTableInfo = { 
-  key:              'one', 
-  tabLabel:         'ユーザー情報',
+  key:              '取引先会社情報', 
+  tabLabel:         '取引先会社情報',
   columns:          columnData,
   searchTemplates:  searchTemplateData,
   fnSearch:         searchTable,
