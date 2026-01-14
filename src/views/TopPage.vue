@@ -141,30 +141,10 @@ async function loadUser() {
   user.value = payload?.clientPrincipal ?? null;
 }
 
-// 2) 統合 Functions を呼び出し（相対パス /api/...）
-async function loadData() {
-  const payload = {
-    name: '山口',
-    options: { mode: 'fast', retry: 1 }
-  };
-
-  const res = await fetch('/api/getM_Users', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  });
-
-  if (!res.ok) throw new Error(`API error: ${res.status}`);
-  viewData.value = await res.json();
-}
-
-
-
 // API 呼び出し
 onMounted(
   async () => {
     await loadUser();      // 一度だけ呼ぶ
-    await loadData();      // 必要に応じて
 
     try {
       const payload = {
