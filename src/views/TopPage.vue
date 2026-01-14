@@ -120,9 +120,52 @@ const commonTableData: CommonTableInfo[] = [
 // API の結果を格納
 const viewData = ref<unknown>(null);
 
+  
+
+// ログインユーザー情報・API結果
+type ClientPrincipal = {
+  identityProvider: string;
+  userId: string;
+  userDetails: string;
+  userRoles: string[];
+  // claims は direct-access(/.auth/me)のみ。API側ヘッダーには含まれない点に注意
+  claims?: Array<{ typ: string; val: string }>;
+} | null;
+
+const user = ref<ClientPrincipal>(null);
+
+// 1) ログイン者情報を取得して state に保持
+async function loadUser() {
+  const res = await fetch('/.auth/me', { credentials: 'include' });
+  const payload = await res.json(); // { clientPrincipal } or { clientPrincipal: null }
+  user.value = payload?.clientPrincipal ?? null;
+}
+
+// 2) 統合 Functions を呼び出し（相対パス /api/...）
+async function loadData() {
+  const payload = {
+    name: '山口',
+    options: { mode: 'fast', retry: 1 }
+  };
+
+  const res = await fetch('/api/getM_Users', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+
+  if (!res.ok) throw new Error(`API error: ${res.status}`);
+  viewData.value = await res.json();
+}
+
+
+
 // API 呼び出し
 onMounted(
   async () => {
+    await loadUser();      // 一度だけ呼ぶ
+    await loadData();      // 必要に応じて
+
     try {
       const payload = {
         name: '山口',
