@@ -1,5 +1,12 @@
 
-{
+{  
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [
+      "/assets/*",
+      "/.auth/*"
+    ]
+  },
   "routes": [
     {
       "route": "/",
