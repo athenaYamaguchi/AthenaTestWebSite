@@ -141,6 +141,7 @@ async function loadUser() {
   user.value = payload?.clientPrincipal ?? null;
   console.log(payload)
   console.log(user.value)
+  viewData.value = payload
 }
 
 // API 呼び出し
@@ -167,7 +168,7 @@ onMounted(
       }
       const json = await res.json();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      viewData.value = json;
+      // viewData.value = json;
     } catch (err) {
       console.error('API 読み込みエラー：', err);
     }
