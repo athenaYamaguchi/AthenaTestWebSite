@@ -35,65 +35,6 @@ export type SearchTemplateInfo = {
 export type Item = Record<string, unknown>;
 
 /**
- * 共通検索検索メソッド
- * @param searchWords 
- */
-export const commonSearchTable = async (
-  searchWords: Record<string, any | null>,
-  url: string,
-  columnData: ColumnInfo[],
-): Promise<Item[]> => {
-  try {
-    const payload = {
-      userName: "山口",
-      searchWords: searchWords,
-    };
-    
-    // envからパスを取得し、サーバーへ問い合わせる
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-
-    if (!res.ok) {
-      const text = await res.text().catch(() => "");
-      let detail: any = text;
-      try { 
-        detail = JSON.parse(text); 
-      } catch {
-        
-      }
-      return [];
-    }
-
-    const ansJson = await res.json();
-
-    // 防御的チェック：items が配列か
-    const rows: any[] = Array.isArray(ansJson?.items) ? ansJson.items : [];
-    if (!rows.length) {
-      // レスポンスが想定外の場合は空配列で返す
-      console.warn('fnSearch: items is empty or not an array.', ansJson);
-      return [];
-    }
-
-    // 列定義に従って詰める（動的キー）
-    const items: Item[] = rows.map((row) =>
-      Object.fromEntries(
-        columnData.map((col) => [col.columnName, row[col.columnName]])
-      )
-    );
-
-    return items;
-
-  } catch (e) {
-    console.error('fnSearch error:', e);
-    // throw e;
-    return []; // 失敗時は空配列が扱いやすい
-  }
-};
-
-/**
  * 共通テーブル情報
  */
 export type CommonTableInfo = {
